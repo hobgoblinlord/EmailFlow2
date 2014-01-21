@@ -51,7 +51,16 @@
                          @[@"Are you going to the meeting?",@"nfennel@incubate.co",@"Are you going to be here in time for the meeting? what time do you think you will get here if you are?",@false,@"5:14a",@"Nathan",@"blueTri.png",@"3",@"20"],
                          @[@"What Time is the Party?",@"nproulx@incubate.co",@"What time should I arrive?",@false,@"3:14a",@"Noel Proulx",@"blueTri.png",@"1",@"5"],
                          @[@"Hey Check this out",@"tchmieleski@incubate.co",@"I thought that this article was really useful. take a look and let me know what you think and if we should use this method",@true,@"Tue",@"Troy Chmieleski",@"blueTri.png",@"0",@"1"]];
-
+	
+	NSMutableArray *performanceTest = [NSMutableArray arrayWithArray:_emailContentList];
+	
+	NSUInteger numberOfAdditionalCells = 100;
+	
+	for (NSUInteger i = 0; i < numberOfAdditionalCells; i++) {
+		[performanceTest addObject:@[@"How's it going",@"bgoss@incubate.co",@"Just wanted to see what you are up to and how things have been. is everything ok in your corner of the world. hit me up with what's going on this weekend",@false,@"8:10p",@"Brian Goss",@"redTri.png",@"4",@"7",]];
+	}
+	
+	_emailContentList = performanceTest;
 }
 
 #pragma mark - Set up table
@@ -156,9 +165,7 @@
     UILabel *emailSubjectLine, *emailTimeLine, *emailPreview, *emailReadUnread;
     UIImageView  *emailAccountFlag, *dotImgView;
     
-    
     // Configure the cell...
-    
     
     int xpos = 49; //default x for title and names
     int xpos2 = 0; // for the blue dot
