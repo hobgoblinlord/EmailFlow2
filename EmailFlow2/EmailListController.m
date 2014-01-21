@@ -188,13 +188,16 @@
     }
     
     // email subject ----------------------------------------------------------------------
-    emailSubjectLine = [[UILabel alloc] initWithFrame:CGRectMake(xpos, 27, 243, 21)];
-    emailSubjectLine.tag = EMAIL_SUBJECT_TAG;
-    emailSubjectLine.font = [UIFont boldSystemFontOfSize:15.0f];
-    emailSubjectLine.textColor = [UIColor blackColor];
-    emailSubjectLine.numberOfLines = 1;
-    emailSubjectLine.text = _emailContentList[row][EMAIL_VIEW_TITLE];
-    [cell.contentView addSubview:emailSubjectLine];
+    //emailSubjectLine = [[UILabel alloc] initWithFrame:CGRectMake(xpos, 27, 243, 21)];
+    //emailSubjectLine.tag = EMAIL_SUBJECT_TAG;
+    //emailSubjectLine.font = [UIFont boldSystemFontOfSize:15.0f];
+    //emailSubjectLine.textColor = [UIColor blackColor];
+    //emailSubjectLine.numberOfLines = 1;
+    //emailSubjectLine.text = _emailContentList[row][EMAIL_VIEW_TITLE];
+    //[cell.contentView addSubview:emailSubjectLine];
+    
+    // email
+	[cell.emailSubject setText:_emailContentList[row][EMAIL_VIEW_TITLE]];
     //end email subject ----------------------------------------------------------------------
     
     

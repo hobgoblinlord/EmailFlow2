@@ -14,9 +14,22 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        // Initialization code
+        // email subject view
+		[self.contentView addSubview:self.emailSubject];
     }
     return self;
+}
+
+
+- (UILabel *)emailSubject {
+	if (!_emailSubject) {
+		_emailSubject = [[UILabel alloc] initWithFrame:CGRectMake(49, 27, 243, 21)];
+        //_emailSubject.font = [UIFont boldSystemFontOfSize:15.0f];
+       // _emailSubject.textColor = [UIColor blackColor];
+        [_emailSubject setFont:[UIFont systemFontOfSize:15.0]];
+	}
+	
+	return _emailSubject;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

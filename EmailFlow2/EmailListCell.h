@@ -10,4 +10,5 @@
 
 @interface EmailListCell : UITableViewCell
 
+@property (strong,nonatomic) UILabel *emailSubject;
 @end
