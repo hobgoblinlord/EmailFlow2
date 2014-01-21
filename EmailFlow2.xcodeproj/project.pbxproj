@@ -13,14 +13,25 @@
 		41AE8315188BB1EB00E8713F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 41AE8313188BB1EB00E8713F /* InfoPlist.strings */; };
 		41AE8317188BB1EB00E8713F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 41AE8316188BB1EB00E8713F /* main.m */; };
 		41AE831B188BB1EB00E8713F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 41AE831A188BB1EB00E8713F /* AppDelegate.m */; };
-		41AE831E188BB1EB00E8713F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 41AE831C188BB1EB00E8713F /* Main.storyboard */; };
-		41AE8321188BB1EB00E8713F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 41AE8320188BB1EB00E8713F /* ViewController.m */; };
+		41AE831E188BB1EB00E8713F /* email.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 41AE831C188BB1EB00E8713F /* email.storyboard */; };
 		41AE8323188BB1EB00E8713F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 41AE8322188BB1EB00E8713F /* Images.xcassets */; };
 		41AE832A188BB1EB00E8713F /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41AE8329188BB1EB00E8713F /* XCTest.framework */; };
 		41AE832B188BB1EB00E8713F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41AE830A188BB1EB00E8713F /* Foundation.framework */; };
 		41AE832C188BB1EB00E8713F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41AE830E188BB1EB00E8713F /* UIKit.framework */; };
 		41AE8334188BB1EB00E8713F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 41AE8332188BB1EB00E8713F /* InfoPlist.strings */; };
 		41AE8336188BB1EB00E8713F /* EmailFlow2Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 41AE8335188BB1EB00E8713F /* EmailFlow2Tests.m */; };
+		41AE8341188BB26400E8713F /* EmailListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 41AE8340188BB26400E8713F /* EmailListController.m */; };
+		41AE8344188BB30D00E8713F /* EmailListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 41AE8343188BB30D00E8713F /* EmailListCell.m */; };
+		41AE8346188BC2BD00E8713F /* NewMail@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 41AE8345188BC2BD00E8713F /* NewMail@2x.png */; };
+		41AE8362188C8FE700E8713F /* GravatarHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 41AE8361188C8FE700E8713F /* GravatarHelper.m */; };
+		41AE837A188DAAEA00E8713F /* blueTri.png in Resources */ = {isa = PBXBuildFile; fileRef = 41AE8376188DAAEA00E8713F /* blueTri.png */; };
+		41AE837B188DAAEA00E8713F /* greenTri.png in Resources */ = {isa = PBXBuildFile; fileRef = 41AE8377188DAAEA00E8713F /* greenTri.png */; };
+		41AE837C188DAAEA00E8713F /* orangeTri.png in Resources */ = {isa = PBXBuildFile; fileRef = 41AE8378188DAAEA00E8713F /* orangeTri.png */; };
+		41AE837D188DAAEA00E8713F /* redTri.png in Resources */ = {isa = PBXBuildFile; fileRef = 41AE8379188DAAEA00E8713F /* redTri.png */; };
+		41AE837F188DADEF00E8713F /* LinkHome@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 41AE837E188DADEF00E8713F /* LinkHome@2x.png */; };
+		41AE8381188DADF800E8713F /* LabelHome@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 41AE8380188DADF800E8713F /* LabelHome@2x.png */; };
+		41AE8383188DAE0100E8713F /* Trash@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 41AE8382188DAE0100E8713F /* Trash@2x.png */; };
+		41AE8385188DAE0700E8713F /* Spam@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 41AE8384188DAE0700E8713F /* Spam@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,15 +55,28 @@
 		41AE8318188BB1EB00E8713F /* EmailFlow2-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EmailFlow2-Prefix.pch"; sourceTree = "<group>"; };
 		41AE8319188BB1EB00E8713F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		41AE831A188BB1EB00E8713F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		41AE831D188BB1EB00E8713F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		41AE831F188BB1EB00E8713F /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		41AE8320188BB1EB00E8713F /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		41AE831D188BB1EB00E8713F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/email.storyboard; sourceTree = "<group>"; };
 		41AE8322188BB1EB00E8713F /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		41AE8328188BB1EB00E8713F /* EmailFlow2Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EmailFlow2Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		41AE8329188BB1EB00E8713F /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		41AE8331188BB1EB00E8713F /* EmailFlow2Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "EmailFlow2Tests-Info.plist"; sourceTree = "<group>"; };
 		41AE8333188BB1EB00E8713F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		41AE8335188BB1EB00E8713F /* EmailFlow2Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EmailFlow2Tests.m; sourceTree = "<group>"; };
+		41AE833F188BB26400E8713F /* EmailListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmailListController.h; sourceTree = "<group>"; };
+		41AE8340188BB26400E8713F /* EmailListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmailListController.m; sourceTree = "<group>"; };
+		41AE8342188BB30D00E8713F /* EmailListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmailListCell.h; sourceTree = "<group>"; };
+		41AE8343188BB30D00E8713F /* EmailListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmailListCell.m; sourceTree = "<group>"; };
+		41AE8345188BC2BD00E8713F /* NewMail@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NewMail@2x.png"; sourceTree = "<group>"; };
+		41AE8360188C8FE700E8713F /* GravatarHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GravatarHelper.h; sourceTree = "<group>"; };
+		41AE8361188C8FE700E8713F /* GravatarHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GravatarHelper.m; sourceTree = "<group>"; };
+		41AE8376188DAAEA00E8713F /* blueTri.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = blueTri.png; path = Images.xcassets/blueTri.png; sourceTree = "<group>"; };
+		41AE8377188DAAEA00E8713F /* greenTri.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = greenTri.png; path = Images.xcassets/greenTri.png; sourceTree = "<group>"; };
+		41AE8378188DAAEA00E8713F /* orangeTri.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = orangeTri.png; path = Images.xcassets/orangeTri.png; sourceTree = "<group>"; };
+		41AE8379188DAAEA00E8713F /* redTri.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = redTri.png; path = Images.xcassets/redTri.png; sourceTree = "<group>"; };
+		41AE837E188DADEF00E8713F /* LinkHome@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LinkHome@2x.png"; sourceTree = "<group>"; };
+		41AE8380188DADF800E8713F /* LabelHome@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LabelHome@2x.png"; sourceTree = "<group>"; };
+		41AE8382188DAE0100E8713F /* Trash@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Trash@2x.png"; sourceTree = "<group>"; };
+		41AE8384188DAE0700E8713F /* Spam@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Spam@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +110,8 @@
 				41AE832F188BB1EB00E8713F /* EmailFlow2Tests */,
 				41AE8309188BB1EB00E8713F /* Frameworks */,
 				41AE8308188BB1EB00E8713F /* Products */,
+				41AE8360188C8FE700E8713F /* GravatarHelper.h */,
+				41AE8361188C8FE700E8713F /* GravatarHelper.m */,
 			);
 			sourceTree = "<group>";
 		};
@@ -114,10 +140,12 @@
 			children = (
 				41AE8319188BB1EB00E8713F /* AppDelegate.h */,
 				41AE831A188BB1EB00E8713F /* AppDelegate.m */,
-				41AE831C188BB1EB00E8713F /* Main.storyboard */,
-				41AE831F188BB1EB00E8713F /* ViewController.h */,
-				41AE8320188BB1EB00E8713F /* ViewController.m */,
+				41AE831C188BB1EB00E8713F /* email.storyboard */,
 				41AE8322188BB1EB00E8713F /* Images.xcassets */,
+				41AE833F188BB26400E8713F /* EmailListController.h */,
+				41AE8340188BB26400E8713F /* EmailListController.m */,
+				41AE8342188BB30D00E8713F /* EmailListCell.h */,
+				41AE8343188BB30D00E8713F /* EmailListCell.m */,
 				41AE8311188BB1EB00E8713F /* Supporting Files */,
 			);
 			path = EmailFlow2;
@@ -127,6 +155,15 @@
 			isa = PBXGroup;
 			children = (
 				41AE8312188BB1EB00E8713F /* EmailFlow2-Info.plist */,
+				41AE8345188BC2BD00E8713F /* NewMail@2x.png */,
+				41AE837E188DADEF00E8713F /* LinkHome@2x.png */,
+				41AE8382188DAE0100E8713F /* Trash@2x.png */,
+				41AE8384188DAE0700E8713F /* Spam@2x.png */,
+				41AE8380188DADF800E8713F /* LabelHome@2x.png */,
+				41AE8376188DAAEA00E8713F /* blueTri.png */,
+				41AE8377188DAAEA00E8713F /* greenTri.png */,
+				41AE8378188DAAEA00E8713F /* orangeTri.png */,
+				41AE8379188DAAEA00E8713F /* redTri.png */,
 				41AE8313188BB1EB00E8713F /* InfoPlist.strings */,
 				41AE8316188BB1EB00E8713F /* main.m */,
 				41AE8318188BB1EB00E8713F /* EmailFlow2-Prefix.pch */,
@@ -228,9 +265,18 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				41AE8346188BC2BD00E8713F /* NewMail@2x.png in Resources */,
+				41AE837F188DADEF00E8713F /* LinkHome@2x.png in Resources */,
 				41AE8323188BB1EB00E8713F /* Images.xcassets in Resources */,
+				41AE837C188DAAEA00E8713F /* orangeTri.png in Resources */,
+				41AE837D188DAAEA00E8713F /* redTri.png in Resources */,
 				41AE8315188BB1EB00E8713F /* InfoPlist.strings in Resources */,
-				41AE831E188BB1EB00E8713F /* Main.storyboard in Resources */,
+				41AE8385188DAE0700E8713F /* Spam@2x.png in Resources */,
+				41AE8383188DAE0100E8713F /* Trash@2x.png in Resources */,
+				41AE8381188DADF800E8713F /* LabelHome@2x.png in Resources */,
+				41AE837A188DAAEA00E8713F /* blueTri.png in Resources */,
+				41AE837B188DAAEA00E8713F /* greenTri.png in Resources */,
+				41AE831E188BB1EB00E8713F /* email.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -249,9 +295,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				41AE8321188BB1EB00E8713F /* ViewController.m in Sources */,
 				41AE831B188BB1EB00E8713F /* AppDelegate.m in Sources */,
 				41AE8317188BB1EB00E8713F /* main.m in Sources */,
+				41AE8344188BB30D00E8713F /* EmailListCell.m in Sources */,
+				41AE8362188C8FE700E8713F /* GravatarHelper.m in Sources */,
+				41AE8341188BB26400E8713F /* EmailListController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -282,12 +330,12 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		41AE831C188BB1EB00E8713F /* Main.storyboard */ = {
+		41AE831C188BB1EB00E8713F /* email.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				41AE831D188BB1EB00E8713F /* Base */,
 			);
-			name = Main.storyboard;
+			name = email.storyboard;
 			sourceTree = "<group>";
 		};
 		41AE8332188BB1EB00E8713F /* InfoPlist.strings */ = {
