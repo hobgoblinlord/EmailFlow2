@@ -1,23 +1,26 @@
 //
-//  EmailListController.m
+//  EmailListViewController.m
 //  EmailFlow2
 //
 //  Created by Noel Proulx on 1/19/14.
 //  Copyright (c) 2014 Noel Proulx. All rights reserved.
 //
 
-#import "EmailListController.h"
+#import "EmailListViewController.h"
 #import "EmailListCell.h"
 #import "GravatarHelper.h"
 
 // gravatar
 //#import "GravatarServiceFactory.h"
 
-@interface EmailListController ()
+// email list cell
+#define EmailListCellIdentifier @"EmailListCellIdentifier"
+
+@interface EmailListViewController ()
 
 @end
 
-@implementation EmailListController
+@implementation EmailListViewController
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -31,6 +34,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	
+	[self setUpTable];
 
     _blueAppColor = [UIColor colorWithRed:0/255.0f green:122/255.0f blue:255/255.0f alpha:1.0f];
     _lightGrayAppColor = [UIColor colorWithRed:204/255.0f green:204/255.0f blue:204/255.0f alpha:1.0f];
@@ -47,6 +52,12 @@
                          @[@"What Time is the Party?",@"nproulx@incubate.co",@"What time should I arrive?",@false,@"3:14a",@"Noel Proulx",@"blueTri.png",@"1",@"5"],
                          @[@"Hey Check this out",@"tchmieleski@incubate.co",@"I thought that this article was really useful. take a look and let me know what you think and if we should use this method",@true,@"Tue",@"Troy Chmieleski",@"blueTri.png",@"0",@"1"]];
 
+}
+
+#pragma mark - Set up table
+
+- (void)setUpTable {
+	[self.tableView registerClass:[EmailListCell class] forCellReuseIdentifier:EmailListCellIdentifier];
 }
 
 - (void)didReceiveMemoryWarning
@@ -140,8 +151,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"EmailListCell";
-    EmailListCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    EmailListCell *cell = [tableView dequeueReusableCellWithIdentifier:EmailListCellIdentifier forIndexPath:indexPath];
     int row = [indexPath row];
     UILabel *emailSubjectLine, *emailTimeLine, *emailPreview, *emailReadUnread;
     UIImageView  *emailAccountFlag, *dotImgView;

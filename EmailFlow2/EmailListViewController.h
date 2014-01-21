@@ -1,5 +1,5 @@
 //
-//  EmailListController.h
+//  EmailListViewController.h
 //  EmailFlow2
 //
 //  Created by Noel Proulx on 1/19/14.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface EmailListController : UITableViewController
+@interface EmailListViewController : UITableViewController
 
 // define values for the email array object--------------------------------------------
 #define EMAIL_VIEW_TITLE 0
