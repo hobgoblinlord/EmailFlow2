@@ -15,6 +15,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
+        self.contentView.backgroundColor = [UIColor whiteColor];
         [self.contentView addSubview:self.emailSubjectLine];
         [self.contentView addSubview:self.emailTimeLabel];
         [self.contentView addSubview:self.emailBlueDot];

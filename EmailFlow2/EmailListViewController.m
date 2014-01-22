@@ -117,7 +117,7 @@
         }
         else
         {
-            static NSString *CellIdentifier = @"EmailListCell";
+            static NSString *CellIdentifier = EmailListCellIdentifier;
             EmailListCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
             UIView *longPressView = (UIView*)[self.view viewWithTag:(indexPath.row*100)+EMAIL_LONGPRESS_VIEW_TAG];
             [longPressView setAlpha:1.0];
@@ -208,6 +208,7 @@
     }
     else
     {
+        cell.contentView.backgroundColor = [UIColor whiteColor];
         [cell.emailTimeLabel setTextColor:[UIColor blackColor]];
     }
     [cell.emailTimeLabel setText:_emailContentList[row][EMAIL_VIEW_TIME]];
@@ -245,7 +246,7 @@
     
     
     //email avatar ---------------------------------------------------------------------------
-    NSString *newURL = _emailContentList[row][EMAIL_VIEW_AVATAR];
+   /* NSString *newURL = _emailContentList[row][EMAIL_VIEW_AVATAR];
     NSURL *gravatarURL = [GravatarHelper getGravatarURL:newURL];
     NSData *imageData = [NSData dataWithContentsOfURL:gravatarURL];
     
@@ -271,7 +272,7 @@
             avatarFrame.origin.x = 9;
             [cell.emailBlueDot setFrame:avatarFrame];
         }
-    }
+    }*/
     //end email avatar -----------------------------------------------------------------------
     
     
