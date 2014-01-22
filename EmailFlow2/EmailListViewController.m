@@ -104,8 +104,7 @@
         
         NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:p];
         // if another cell is currently being longpressed clear it
-        int theCurrentCell = [self getCurrentlySelectedListCell];
-        if(theCurrentCell >-1)
+        if(_currentlySelectedListCell >-1)
         {
             NSIndexPath *indexPath2 = [self getCurrentlySelectedListCellPath];
             [self updateLongpressView:indexPath2];
@@ -122,9 +121,7 @@
             EmailListCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
             UIView *longPressView = (UIView*)[self.view viewWithTag:(indexPath.row*100)+EMAIL_LONGPRESS_VIEW_TAG];
             [longPressView setAlpha:1.0];
-            
-            
-
+			
         }
     }
 }
@@ -145,23 +142,11 @@
     _currentlySelectedListCellPath = cellValue;
 }
 
-- (NSInteger) getCurrentlySelectedListCell
-{
-    
-    // Return the number of rows in the section.
-    return _currentlySelectedListCell;
-}
-
-- (void) setCurrentlySelectedListCell:(int)cellValue
-{
-    _currentlySelectedListCell = cellValue;
-}
-
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     EmailListCell *cell = [tableView dequeueReusableCellWithIdentifier:EmailListCellIdentifier forIndexPath:indexPath];
-    int row = [indexPath row];
+    NSInteger row = [indexPath row];
+	
     UILabel *emailSubjectLine, *emailTimeLine, *emailPreview, *emailReadUnread;
     UIImageView  *emailAccountFlag, *dotImgView;
     
@@ -358,20 +343,18 @@
 
 - (void) tapped: (UIGestureRecognizer *)taps
 {
-    
-    int theCurrentCell = [self getCurrentlySelectedListCell];
     CGPoint p = [taps locationInView:self.tableView];
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:p];
     
     // a new cell was tapped when a cell was already in long hold
-    if(theCurrentCell > -1 && theCurrentCell != indexPath.row)
+    if(_currentlySelectedListCell > -1 && _currentlySelectedListCell != indexPath.row)
     {
         NSIndexPath *indexPath2 = [self getCurrentlySelectedListCellPath];
         [self updateLongpressView:indexPath2];
         
     }
     //is tapping inside a cell in longpress handle menu
-    else if(theCurrentCell == indexPath.row)
+    else if(_currentlySelectedListCell == indexPath.row)
     {
         
         int pointPressed = p.x, boxes=[UIScreen mainScreen].bounds.size.width/4,section=0;
@@ -394,7 +377,6 @@
 {
     //static NSString *CellIdentifier = @"emailTableCellController";
     EmailListCell *cell = (EmailListCell *)[(UITableView *)self.view cellForRowAtIndexPath:indexPath];
-    int theCurrentCell = [self getCurrentlySelectedListCell];
     }
 
 

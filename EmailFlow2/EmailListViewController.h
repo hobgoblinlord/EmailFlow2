@@ -43,5 +43,6 @@
 
 @property (nonatomic,strong) UIColor *blueAppColor, *lightGrayAppColor, *mediumGrayAppColor, *grayBackgroundAppColor;
 @property (nonatomic,strong) NSIndexPath *currentlySelectedListCellPath;
-@property (nonatomic, assign) int currentlySelectedListCell;
+@property (nonatomic, assign) NSInteger currentlySelectedListCell;
+
 @end
