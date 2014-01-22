@@ -10,4 +10,7 @@
 
 @interface EmailListCell : UITableViewCell
 
+@property (nonatomic, strong) UILabel *emailSubjectLine, *emailTimeLabel, *emailPreviewLabel, *emailReadUnreadNames;
+@property (nonatomic, strong) UIImageView *emailBlueDot, *emailAvatar, *emailAccountFlag;
+
 @end

@@ -193,9 +193,8 @@
     }
     else{
         //add the dot
-        dotImgView = [[UIImageView alloc] initWithFrame:CGRectMake(xpos, 18, 10, 10)];
-        dotImgView.image = [UIImage imageNamed:@"NewMail@2x.png"];
-        [cell.contentView addSubview: dotImgView];
+        [cell.emailBlueDot setImage:[UIImage imageNamed:@"NewMail@2x.png"]];
+    
         xpos2 = 12;
         // to change the color of unread emails to blue
         NSString *getLength = _emailContentList[row][EMAIL_VIEW_NEW_EMAIL];
@@ -205,82 +204,72 @@
     }
     
     // email subject ----------------------------------------------------------------------
-    emailSubjectLine = [[UILabel alloc] initWithFrame:CGRectMake(xpos, 27, 243, 21)];
-    emailSubjectLine.tag = EMAIL_SUBJECT_TAG;
-    emailSubjectLine.font = [UIFont boldSystemFontOfSize:15.0f];
-    emailSubjectLine.textColor = [UIColor blackColor];
-    emailSubjectLine.numberOfLines = 1;
-    emailSubjectLine.text = _emailContentList[row][EMAIL_VIEW_TITLE];
-    [cell.contentView addSubview:emailSubjectLine];
+    //emailSubjectLine.tag = EMAIL_SUBJECT_TAG;
+    [cell.emailSubjectLine setText:_emailContentList[row][EMAIL_VIEW_TITLE]];
     //end email subject ----------------------------------------------------------------------
     
     
     //email time and if flagged as email read ------------------------------------------------
-    emailTimeLine = [[UILabel alloc] initWithFrame:CGRectMake(screenWidth-66, 12, 60, 21)];
-    emailTimeLine.tag = EMAIL_TIME_TAG;
-    emailTimeLine.font = [UIFont systemFontOfSize:14.0f];
-    emailTimeLine.numberOfLines = 1;
-    emailTimeLine.text = _emailContentList[row][EMAIL_VIEW_TIME];
-    emailTimeLine.textAlignment = NSTextAlignmentRight;
+    
+    //emailTimeLine.tag = EMAIL_TIME_TAG;
+    
     // change background color and time color if the email has been read
     if ([_emailContentList[row][EMAIL_VIEW_READ] isEqual: @true])
     {
         
         cell.contentView.backgroundColor = _grayBackgroundAppColor;
-        emailTimeLine.textColor = _lightGrayAppColor;
+        [cell.emailTimeLabel setTextColor:_lightGrayAppColor];
         
     }
     else
     {
-        emailTimeLine.textColor = [UIColor blackColor];
+        [cell.emailTimeLabel setTextColor:[UIColor blackColor]];
     }
-    
-    [cell.contentView addSubview:emailTimeLine];
+    [cell.emailTimeLabel setText:_emailContentList[row][EMAIL_VIEW_TIME]];
+    //[cell.contentView addSubview:emailTimeLine];
     //end email time -------------------------------------------------------------------------
     
     
     //email preview --------------------------------------------------------------------------
-    emailPreview = [[UILabel alloc] initWithFrame:CGRectMake(9, 49, screenWidth-15, 35)];
-    emailPreview.tag = EMAIL_PREVIEW_TAG;
-    emailPreview.textColor = _mediumGrayAppColor;
-    emailPreview.font = [UIFont systemFontOfSize:14.0f];
-    emailPreview.numberOfLines = 2;
-    emailPreview.text=_emailContentList[row][EMAIL_VIEW_PREVIEW];
-    CGSize labelSize = [emailPreview.text sizeWithFont:emailPreview.font
-                                constrainedToSize:emailPreview.frame.size
+    //emailPreview.tag = EMAIL_PREVIEW_TAG;
+    
+    [cell.emailPreviewLabel setTextColor:_mediumGrayAppColor];
+    [cell.emailPreviewLabel setText:_emailContentList[row][EMAIL_VIEW_PREVIEW]];
+    
+    CGSize labelSize = [cell.emailPreviewLabel.text sizeWithFont:cell.emailPreviewLabel.font
+                                constrainedToSize:cell.emailPreviewLabel.frame.size
                                     lineBreakMode:UILineBreakModeWordWrap];
     CGFloat labelHeight = labelSize.height;
     if(labelHeight<18) //adjust y location if only one line of text in the preview
     {
-        CGRect labelFrame = [emailPreview frame];
+        CGRect labelFrame = [cell.emailPreviewLabel frame];
         labelFrame.origin.y = 40;
-        [emailPreview setFrame:labelFrame];
+        [cell.emailPreviewLabel setFrame:labelFrame];
     }
-    [cell.contentView addSubview:emailPreview];
+
     // end email preview ---------------------------------------------------------------------
     
     
     //email read and unread ------------------------------------------------------------------
-    emailReadUnread = [[UILabel alloc] initWithFrame:CGRectMake(xpos+xpos2, 12, 164, 21)];
-    emailReadUnread.tag = EMAIL_UNREAD_TAG;
-    emailReadUnread.attributedText = emailReadString;
-    emailReadUnread.font = [UIFont systemFontOfSize:14.0f];
-    [cell.contentView addSubview:emailReadUnread];
+    //emailReadUnread.tag = EMAIL_UNREAD_TAG;
+    CGRect readFrame = [cell.emailReadUnreadNames frame];
+    readFrame.origin.x = xpos+xpos2;
+    [cell.emailReadUnreadNames setFrame:readFrame];
+    [cell.emailReadUnreadNames setAttributedText:emailReadString];
     //end email read and unread --------------------------------------------------------------
     
     
     //email avatar ---------------------------------------------------------------------------
-    UIImageView *emailAvatar = [[UIImageView alloc] initWithFrame:CGRectMake(9, 9, 36, 36)];
     NSString *newURL = _emailContentList[row][EMAIL_VIEW_AVATAR];
     NSURL *gravatarURL = [GravatarHelper getGravatarURL:newURL];
     NSData *imageData = [NSData dataWithContentsOfURL:gravatarURL];
     
     if(imageData !=nil)
     {
-        emailAvatar.image = [UIImage imageWithData:imageData];
-        emailAvatar.layer.cornerRadius = AVATAR_CORNER_RADIUS;
-        emailAvatar.layer.masksToBounds = YES;
-    [cell.contentView addSubview: emailAvatar];
+        [cell.emailAvatar setImage:[UIImage imageWithData:imageData]];
+        [cell.emailAvatar setImage:[UIImage imageWithData:imageData]];
+        cell.emailAvatar.layer.cornerRadius = AVATAR_CORNER_RADIUS;
+        cell.emailAvatar.layer.masksToBounds = YES;
     }
     else
     {
@@ -288,23 +277,21 @@
         CGRect avatarFrame = [emailSubjectLine frame];
         avatarFrame.origin.x=9;
         [emailSubjectLine setFrame:avatarFrame];
-        avatarFrame = [emailReadUnread frame];
+        avatarFrame = [cell.emailReadUnreadNames frame];
         avatarFrame.origin.x=9+xpos2;
-        [emailReadUnread setFrame: avatarFrame];
+        [cell.emailReadUnreadNames setFrame: avatarFrame];
         if(xpos2>0)
         {
-            avatarFrame = [dotImgView frame];
+            avatarFrame = cell.emailBlueDot.frame;
             avatarFrame.origin.x = 9;
-            [dotImgView setFrame:avatarFrame];
+            [cell.emailBlueDot setFrame:avatarFrame];
         }
     }
     //end email avatar -----------------------------------------------------------------------
     
     
     //email account flag ---------------------------------------------------------------------
-    emailAccountFlag = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 8, 20)];
-    emailAccountFlag.image = [UIImage imageNamed:_emailContentList[row][EMAIL_VIEW_ACCOUNT_FLAG]];
-    [cell.contentView addSubview:emailAccountFlag];
+    [cell.emailAccountFlag setImage:[UIImage imageNamed:_emailContentList[row][EMAIL_VIEW_ACCOUNT_FLAG]]];
     //end email account flag -----------------------------------------------------------------
     
     
