@@ -23,8 +23,57 @@
         [self.contentView addSubview:self.emailReadUnreadNames];
         [self.contentView addSubview:self.emailAvatar];
         [self.contentView addSubview:self.emailAccountFlag];
+        [self.contentView addSubview:self.longpressView];
     }
     return self;
+}
+
+#pragma mark - Long Press Overlay
+
+- (UIView *)longpressView {
+	if (!_longpressView) {
+        NSInteger screenWidth = [UIScreen mainScreen].bounds.size.width;
+        NSInteger boxes = screenWidth/4;
+        NSInteger padding = (boxes-36)/2;
+		_longpressView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, 98)];
+        _longpressView.backgroundColor = [UIColor colorWithRed:122/255.0f green:122/255.0f blue:122/255.0f alpha:1.0f];
+        _longpressView.hidden = YES;
+        UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(padding, 20, 36, 36)];
+        imgView.image = [UIImage imageNamed:@"Trash@2x.png"];
+        [_longpressView addSubview: imgView];
+        imgView = [[UIImageView alloc] initWithFrame:CGRectMake(padding+boxes, 20, 36, 36)];
+        imgView.image = [UIImage imageNamed:@"Spam@2x.png"];
+        [_longpressView addSubview: imgView];
+        imgView = [[UIImageView alloc] initWithFrame:CGRectMake(padding+(boxes*2), 20, 36, 36)];
+        imgView.image = [UIImage imageNamed:@"LabelHome@2x.png"];
+        [_longpressView addSubview: imgView];
+        imgView = [[UIImageView alloc] initWithFrame:CGRectMake(padding+(boxes*3), 20, 36, 36)];
+        imgView.image = [UIImage imageNamed:@"LinkHome@2x.png"];
+        [_longpressView addSubview: imgView];
+        //draw the text labels for the icons
+        UILabel  * label = [[UILabel alloc] initWithFrame:CGRectMake(0, 60, boxes, 16)];
+        label.text = @"Delete";
+        label.textAlignment = NSTextAlignmentCenter;
+        label.textColor = [UIColor colorWithRed:255/255.0f green:255/255.0f blue:255/255.0f alpha:1.0f];
+        [_longpressView addSubview: label];
+        label = [[UILabel alloc] initWithFrame:CGRectMake(boxes, 60, boxes, 16)];
+        label.text = @"Spam";
+        label.textAlignment = NSTextAlignmentCenter;
+        label.textColor = [UIColor colorWithRed:255/255.0f green:255/255.0f blue:255/255.0f alpha:1.0f];
+        [_longpressView addSubview: label];
+        label = [[UILabel alloc] initWithFrame:CGRectMake(boxes*2, 60, boxes, 16)];
+        label.text = @"Label";
+        label.textAlignment = NSTextAlignmentCenter;
+        label.textColor = [UIColor colorWithRed:255/255.0f green:255/255.0f blue:255/255.0f alpha:1.0f];
+        [_longpressView addSubview: label];
+        label = [[UILabel alloc] initWithFrame:CGRectMake(boxes*3, 60, boxes, 16)];
+        label.text = @"Link";
+        label.textAlignment = NSTextAlignmentCenter;
+        label.textColor = [UIColor colorWithRed:255/255.0f green:255/255.0f blue:255/255.0f alpha:1.0f];
+        [_longpressView addSubview: label];
+	}
+	
+	return _longpressView;
 }
 
 #pragma mark - Email Subject View

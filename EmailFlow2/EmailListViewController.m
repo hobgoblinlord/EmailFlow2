@@ -54,7 +54,7 @@
 	
 	NSMutableArray *performanceTest = [NSMutableArray arrayWithArray:_emailContentList];
 	
-	NSUInteger numberOfAdditionalCells = 100;
+	NSUInteger numberOfAdditionalCells = 20;
 	
 	for (NSUInteger i = 0; i < numberOfAdditionalCells; i++) {
 		[performanceTest addObject:@[@"How's it going",@"bgoss@incubate.co",@"Just wanted to see what you are up to and how things have been. is everything ok in your corner of the world. hit me up with what's going on this weekend",@false,@"8:10p",@"Brian Goss",@"redTri.png",@"4",@"7",]];
@@ -103,6 +103,10 @@
         CGPoint p = [longPress locationInView:self.tableView];
         
         NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:p];
+        
+        //UIAlertView* mes=[[UIAlertView alloc] initWithTitle:@"LONG HOLD REVISITED" message:[NSString stringWithFormat:@"row %i is being longpressed", indexPath.row] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+        //[mes show];
+        
         // if another cell is currently being longpressed clear it
         if(_currentlySelectedListCell >-1)
         {
@@ -110,7 +114,7 @@
             [self updateLongpressView:indexPath2];
         }
         [self setCurrentlySelectedListCellPath:indexPath];
-        [self setCurrentlySelectedListCell:indexPath.row];
+        _currentlySelectedListCell = indexPath.row;
         if (indexPath == nil)
         {
             NSLog(@"No Cell");
@@ -119,17 +123,19 @@
         {
             static NSString *CellIdentifier = EmailListCellIdentifier;
             EmailListCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-            UIView *longPressView = (UIView*)[self.view viewWithTag:(indexPath.row*100)+EMAIL_LONGPRESS_VIEW_TAG];
-            [longPressView setAlpha:1.0];
+            [cell.longpressView setHidden:NO];
+            //UIView *longPressView = (UIView*)[self.view viewWithTag:(indexPath.row*100)+EMAIL_LONGPRESS_VIEW_TAG];
+            //[longPressView setAlpha:1.0];
 			
         }
     }
 }
 
 - (void)updateLongpressView:(NSIndexPath *)tagField {
-    UIView *longPressView = (UIView*)[self.view viewWithTag:(tagField.row*100)+EMAIL_LONGPRESS_VIEW_TAG];
-        [longPressView setAlpha:0.0];
-    [self setCurrentlySelectedListCell:-1];
+    static NSString *CellIdentifier = EmailListCellIdentifier;
+    EmailListCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:tagField];
+    [cell.longpressView setHidden:YES];
+    _currentlySelectedListCell = -1;
 }
 
 - (NSIndexPath*) getCurrentlySelectedListCellPath
@@ -175,6 +181,7 @@
     {
         //no unread emails default to grey for the entire string
         [emailReadString addAttribute:NSForegroundColorAttributeName value:_mediumGrayAppColor range:NSMakeRange(0, readUnreadPlaceholder.length)];
+        [cell.emailBlueDot setImage:nil];
     }
     else{
         //add the dot
@@ -232,6 +239,11 @@
         labelFrame.origin.y = 40;
         [cell.emailPreviewLabel setFrame:labelFrame];
     }
+    else{
+        CGRect labelFrame = [cell.emailPreviewLabel frame];
+        labelFrame.origin.y = 49;
+        [cell.emailPreviewLabel setFrame:labelFrame];
+    }
 
     // end email preview ---------------------------------------------------------------------
     
@@ -246,14 +258,13 @@
     
     
     //email avatar ---------------------------------------------------------------------------
-   /* NSString *newURL = _emailContentList[row][EMAIL_VIEW_AVATAR];
-    NSURL *gravatarURL = [GravatarHelper getGravatarURL:newURL];
-    NSData *imageData = [NSData dataWithContentsOfURL:gravatarURL];
-    
-    if(imageData !=nil)
+    //NSString *newURL = _emailContentList[row][EMAIL_VIEW_AVATAR];
+    //NSURL *gravatarURL = [GravatarHelper getGravatarURL:newURL];
+    //NSData *imageData = [NSData dataWithContentsOfURL:gravatarURL];
+    NSString *imageData = @"default";
+    if([imageData isEqual:@"default"])
     {
-        [cell.emailAvatar setImage:[UIImage imageWithData:imageData]];
-        [cell.emailAvatar setImage:[UIImage imageWithData:imageData]];
+        [cell.emailAvatar setImage:[UIImage imageNamed:@"ProfilePlaceholderSolid@2x.png"]];
         cell.emailAvatar.layer.cornerRadius = AVATAR_CORNER_RADIUS;
         cell.emailAvatar.layer.masksToBounds = YES;
     }
@@ -272,7 +283,7 @@
             avatarFrame.origin.x = 9;
             [cell.emailBlueDot setFrame:avatarFrame];
         }
-    }*/
+    }
     //end email avatar -----------------------------------------------------------------------
     
     
@@ -282,50 +293,19 @@
     
     
     //email longpress overlay ----------------------------------------------------------------
-    CGRect  viewRect = CGRectMake(0, 0, screenWidth, 98);
-    UIView* longpressView = [[UIView alloc] initWithFrame:viewRect];
-    longpressView.backgroundColor = _mediumGrayAppColor;
-    longpressView.tag = 100*row+EMAIL_LONGPRESS_VIEW_TAG;
-    longpressView.alpha = 0.0f;
+    //CGRect  viewRect = CGRectMake(0, 0, screenWidth, 98);
     
-    int boxes = screenWidth/4;
-    int padding = (boxes-36)/2;
+   
     
-    UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(padding, 20, 36, 36)];
-    imgView.image = [UIImage imageNamed:@"Trash@2x.png"];
-    [longpressView addSubview: imgView];
-    imgView = [[UIImageView alloc] initWithFrame:CGRectMake(padding+boxes, 20, 36, 36)];
-    imgView.image = [UIImage imageNamed:@"Spam@2x.png"];
-    [longpressView addSubview: imgView];
-    imgView = [[UIImageView alloc] initWithFrame:CGRectMake(padding+(boxes*2), 20, 36, 36)];
-    imgView.image = [UIImage imageNamed:@"LabelHome@2x.png"];
-    [longpressView addSubview: imgView];
-    imgView = [[UIImageView alloc] initWithFrame:CGRectMake(padding+(boxes*3), 20, 36, 36)];
-    imgView.image = [UIImage imageNamed:@"LinkHome@2x.png"];
-    [longpressView addSubview: imgView];
-    //draw the text labels for the icons
-    UILabel  * label = [[UILabel alloc] initWithFrame:CGRectMake(0, 60, boxes, 16)];
-    label.text = @"Delete";
-    label.textAlignment = NSTextAlignmentCenter;
-    label.textColor = [UIColor colorWithRed:255/255.0f green:255/255.0f blue:255/255.0f alpha:1.0f];
-    [longpressView addSubview: label];
-    label = [[UILabel alloc] initWithFrame:CGRectMake(boxes, 60, boxes, 16)];
-    label.text = @"Spam";
-    label.textAlignment = NSTextAlignmentCenter;
-    label.textColor = [UIColor colorWithRed:255/255.0f green:255/255.0f blue:255/255.0f alpha:1.0f];
-    [longpressView addSubview: label];
-    label = [[UILabel alloc] initWithFrame:CGRectMake(boxes*2, 60, boxes, 16)];
-    label.text = @"Label";
-    label.textAlignment = NSTextAlignmentCenter;
-    label.textColor = [UIColor colorWithRed:255/255.0f green:255/255.0f blue:255/255.0f alpha:1.0f];
-    [longpressView addSubview: label];
-    label = [[UILabel alloc] initWithFrame:CGRectMake(boxes*3, 60, boxes, 16)];
-    label.text = @"Link";
-    label.textAlignment = NSTextAlignmentCenter;
-    label.textColor = [UIColor colorWithRed:255/255.0f green:255/255.0f blue:255/255.0f alpha:1.0f];
-    [longpressView addSubview: label];
+    [cell.longpressView setTag:100*row+EMAIL_LONGPRESS_VIEW_TAG];
     
-    [cell.contentView addSubview:longpressView];
+    if(row != _currentlySelectedListCell)
+    {
+        [cell.longpressView setHidden:YES];
+    }
+    else{
+        [cell.longpressView setHidden:NO];
+    }
     //end longpress overlay ------------------------------------------------------------------
     
     //long press --------------------------------------------------------------------------
@@ -348,6 +328,8 @@
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:p];
     
     // a new cell was tapped when a cell was already in long hold
+    UIAlertView* mes=[[UIAlertView alloc] initWithTitle:@"CELL TAPPED" message:[NSString stringWithFormat:@"CSR %i", _currentlySelectedListCell] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+    [mes show];
     if(_currentlySelectedListCell > -1 && _currentlySelectedListCell != indexPath.row)
     {
         NSIndexPath *indexPath2 = [self getCurrentlySelectedListCellPath];

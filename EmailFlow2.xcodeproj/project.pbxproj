@@ -31,6 +31,7 @@
 		41AE8381188DADF800E8713F /* LabelHome@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 41AE8380188DADF800E8713F /* LabelHome@2x.png */; };
 		41AE8383188DAE0100E8713F /* Trash@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 41AE8382188DAE0100E8713F /* Trash@2x.png */; };
 		41AE8385188DAE0700E8713F /* Spam@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 41AE8384188DAE0700E8713F /* Spam@2x.png */; };
+		41C765701890A9CE00DE2C89 /* ProfilePlaceholderSolid@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 41C7656F1890A9CE00DE2C89 /* ProfilePlaceholderSolid@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +76,7 @@
 		41AE8380188DADF800E8713F /* LabelHome@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LabelHome@2x.png"; sourceTree = "<group>"; };
 		41AE8382188DAE0100E8713F /* Trash@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Trash@2x.png"; sourceTree = "<group>"; };
 		41AE8384188DAE0700E8713F /* Spam@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Spam@2x.png"; sourceTree = "<group>"; };
+		41C7656F1890A9CE00DE2C89 /* ProfilePlaceholderSolid@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ProfilePlaceholderSolid@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,6 +159,7 @@
 				41AE8382188DAE0100E8713F /* Trash@2x.png */,
 				41AE8384188DAE0700E8713F /* Spam@2x.png */,
 				41AE8380188DADF800E8713F /* LabelHome@2x.png */,
+				41C7656F1890A9CE00DE2C89 /* ProfilePlaceholderSolid@2x.png */,
 				41AE8376188DAAEA00E8713F /* blueTri.png */,
 				41AE8377188DAAEA00E8713F /* greenTri.png */,
 				41AE8378188DAAEA00E8713F /* orangeTri.png */,
@@ -264,6 +267,7 @@
 			files = (
 				41AE8346188BC2BD00E8713F /* NewMail@2x.png in Resources */,
 				41AE837F188DADEF00E8713F /* LinkHome@2x.png in Resources */,
+				41C765701890A9CE00DE2C89 /* ProfilePlaceholderSolid@2x.png in Resources */,
 				41AE8323188BB1EB00E8713F /* Images.xcassets in Resources */,
 				41AE837C188DAAEA00E8713F /* orangeTri.png in Resources */,
 				41AE837D188DAAEA00E8713F /* redTri.png in Resources */,
