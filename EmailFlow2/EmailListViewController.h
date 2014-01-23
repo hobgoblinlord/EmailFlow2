@@ -41,7 +41,7 @@
 //--
 @property (nonatomic,strong) NSArray *emailContentList;
 
-@property (nonatomic,strong) UIColor *blueAppColor, *lightGrayAppColor, *mediumGrayAppColor, *grayBackgroundAppColor;
+@property (nonatomic,strong) UIColor *blueAppColor, *lightGrayAppColor, *mediumGrayAppColor, *grayBackgroundAppColor, *darkGrayColor;
 @property (nonatomic,strong) NSIndexPath *currentlySelectedListCellPath;
 @property (nonatomic, assign) NSInteger currentlySelectedListCell;
 

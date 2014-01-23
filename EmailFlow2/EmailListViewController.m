@@ -14,7 +14,7 @@
 //#import "GravatarServiceFactory.h"
 
 // email list cell
-#define EmailListCellIdentifier @"EmailListCellIdentifier"
+#define EmailListCellIdentifier @"EmailListCell"
 
 @interface EmailListViewController ()
 
@@ -40,6 +40,7 @@
     _blueAppColor = [UIColor colorWithRed:0/255.0f green:122/255.0f blue:255/255.0f alpha:1.0f];
     _lightGrayAppColor = [UIColor colorWithRed:204/255.0f green:204/255.0f blue:204/255.0f alpha:1.0f];
     _mediumGrayAppColor = [UIColor colorWithRed:122/255.0f green:122/255.0f blue:122/255.0f alpha:1.0f];
+    _darkGrayColor = [UIColor colorWithRed:50/255.0f green:50/255.0f blue:50/255.0f alpha:1.0f];
     _grayBackgroundAppColor = [UIColor colorWithRed:247/255.0f green:247/255.0f blue:247/255.0f alpha:1.0f];
 
     _currentlySelectedListCell = -1;
@@ -54,10 +55,11 @@
 	
 	NSMutableArray *performanceTest = [NSMutableArray arrayWithArray:_emailContentList];
 	
-	NSUInteger numberOfAdditionalCells = 20;
+	NSUInteger numberOfAdditionalCells = 2000;
 	
 	for (NSUInteger i = 0; i < numberOfAdditionalCells; i++) {
 		[performanceTest addObject:@[@"How's it going",@"bgoss@incubate.co",@"Just wanted to see what you are up to and how things have been. is everything ok in your corner of the world. hit me up with what's going on this weekend",@false,@"8:10p",@"Brian Goss",@"redTri.png",@"4",@"7",]];
+        [performanceTest addObject:@[@"Who went to the party last night",@"jgoss@incubate.co",@"If you went to the party did you see my keys?",@true,@"7:12p",@"Jeff Goss",@"redTri.png",@"0",@"4",]];
 	}
 	
 	_emailContentList = performanceTest;
@@ -101,12 +103,8 @@
     if (longPress.state==UIGestureRecognizerStateBegan)
     {
         CGPoint p = [longPress locationInView:self.tableView];
-        
         NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:p];
-        
-        //UIAlertView* mes=[[UIAlertView alloc] initWithTitle:@"LONG HOLD REVISITED" message:[NSString stringWithFormat:@"row %i is being longpressed", indexPath.row] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
-        //[mes show];
-        
+
         // if another cell is currently being longpressed clear it
         if(_currentlySelectedListCell >-1)
         {
@@ -132,9 +130,12 @@
 }
 
 - (void)updateLongpressView:(NSIndexPath *)tagField {
-    static NSString *CellIdentifier = EmailListCellIdentifier;
-    EmailListCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:tagField];
-    [cell.longpressView setHidden:YES];
+    //static NSString *CellIdentifier = EmailListCellIdentifier;
+    //EmailListCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:tagField];
+    UIView *longPressView = (UIView*)[self.view viewWithTag:(tagField.row*100)+EMAIL_LONGPRESS_VIEW_TAG];
+    [longPressView setHidden:YES];
+    //UIAlertView* mes=[[UIAlertView alloc] initWithTitle:@"LONG HOLD REVISITED" message:[NSString stringWithFormat:@"hit the update routine %i", tagField.row] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+    //[mes show];
     _currentlySelectedListCell = -1;
 }
 
@@ -153,19 +154,11 @@
     EmailListCell *cell = [tableView dequeueReusableCellWithIdentifier:EmailListCellIdentifier forIndexPath:indexPath];
     NSInteger row = [indexPath row];
 	
-    UILabel *emailSubjectLine, *emailTimeLine, *emailPreview, *emailReadUnread;
-    UIImageView  *emailAccountFlag, *dotImgView;
+    UILabel *emailSubjectLine;
     
     // Configure the cell...
     
-    int xpos = 49; //default x for title and names
-    int xpos2 = 0; // for the blue dot
-    int screenWidth = [UIScreen mainScreen].bounds.size.width; // screen width
-    
-    NSString *defaultURL = @"default";
-    NSURL *gravatarDefaultURL = [GravatarHelper getGravatarURL:defaultURL];
-    
-    NSData *imageDefaultData = [NSData dataWithContentsOfURL:gravatarDefaultURL];
+    NSInteger xpos = 49, xpos2=0, screenWidth = [UIScreen mainScreen].bounds.size.width;; //default x for title and names
     
     //compile the unread/total emails and names
     NSString *readUnreadPlaceholder =[NSString stringWithFormat:@"%@/%@ %@", _emailContentList[row][EMAIL_VIEW_NEW_EMAIL],_emailContentList[row][EMAIL_VIEW_TOTAL_EMAIL], _emailContentList[row][EMAIL_VIEW_NAMES]];
@@ -196,22 +189,16 @@
     }
     
     // email subject ----------------------------------------------------------------------
-    //emailSubjectLine.tag = EMAIL_SUBJECT_TAG;
     [cell.emailSubjectLine setText:_emailContentList[row][EMAIL_VIEW_TITLE]];
     //end email subject ----------------------------------------------------------------------
     
     
     //email time and if flagged as email read ------------------------------------------------
-    
-    //emailTimeLine.tag = EMAIL_TIME_TAG;
-    
     // change background color and time color if the email has been read
     if ([_emailContentList[row][EMAIL_VIEW_READ] isEqual: @true])
     {
-        
         cell.contentView.backgroundColor = _grayBackgroundAppColor;
         [cell.emailTimeLabel setTextColor:_lightGrayAppColor];
-        
     }
     else
     {
@@ -219,16 +206,12 @@
         [cell.emailTimeLabel setTextColor:[UIColor blackColor]];
     }
     [cell.emailTimeLabel setText:_emailContentList[row][EMAIL_VIEW_TIME]];
-    //[cell.contentView addSubview:emailTimeLine];
     //end email time -------------------------------------------------------------------------
     
     
     //email preview --------------------------------------------------------------------------
-    //emailPreview.tag = EMAIL_PREVIEW_TAG;
-    
     [cell.emailPreviewLabel setTextColor:_mediumGrayAppColor];
     [cell.emailPreviewLabel setText:_emailContentList[row][EMAIL_VIEW_PREVIEW]];
-    
     CGSize labelSize = [cell.emailPreviewLabel.text sizeWithFont:cell.emailPreviewLabel.font
                                 constrainedToSize:cell.emailPreviewLabel.frame.size
                                     lineBreakMode:UILineBreakModeWordWrap];
@@ -244,12 +227,10 @@
         labelFrame.origin.y = 49;
         [cell.emailPreviewLabel setFrame:labelFrame];
     }
-
     // end email preview ---------------------------------------------------------------------
     
     
     //email read and unread ------------------------------------------------------------------
-    //emailReadUnread.tag = EMAIL_UNREAD_TAG;
     CGRect readFrame = [cell.emailReadUnreadNames frame];
     readFrame.origin.x = xpos+xpos2;
     [cell.emailReadUnreadNames setFrame:readFrame];
@@ -258,9 +239,6 @@
     
     
     //email avatar ---------------------------------------------------------------------------
-    //NSString *newURL = _emailContentList[row][EMAIL_VIEW_AVATAR];
-    //NSURL *gravatarURL = [GravatarHelper getGravatarURL:newURL];
-    //NSData *imageData = [NSData dataWithContentsOfURL:gravatarURL];
     NSString *imageData = @"default";
     if([imageData isEqual:@"default"])
     {
@@ -293,12 +271,8 @@
     
     
     //email longpress overlay ----------------------------------------------------------------
-    //CGRect  viewRect = CGRectMake(0, 0, screenWidth, 98);
-    
-   
-    
     [cell.longpressView setTag:100*row+EMAIL_LONGPRESS_VIEW_TAG];
-    
+    [cell.longpressView setBackgroundColor:_mediumGrayAppColor];
     if(row != _currentlySelectedListCell)
     {
         [cell.longpressView setHidden:YES];
@@ -328,10 +302,12 @@
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:p];
     
     // a new cell was tapped when a cell was already in long hold
-    UIAlertView* mes=[[UIAlertView alloc] initWithTitle:@"CELL TAPPED" message:[NSString stringWithFormat:@"CSR %i", _currentlySelectedListCell] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
-    [mes show];
+    //UIAlertView* mes=[[UIAlertView alloc] initWithTitle:@"CELL TAPPED" message:[NSString stringWithFormat:@"CSR %i", _currentlySelectedListCell] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+    //[mes show];
     if(_currentlySelectedListCell > -1 && _currentlySelectedListCell != indexPath.row)
     {
+        UIAlertView* mes=[[UIAlertView alloc] initWithTitle:@"CELL TAPPED" message:[NSString stringWithFormat:@"going to the update %i", _currentlySelectedListCell] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+        [mes show];
         NSIndexPath *indexPath2 = [self getCurrentlySelectedListCellPath];
         [self updateLongpressView:indexPath2];
         
@@ -358,9 +334,8 @@
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //static NSString *CellIdentifier = @"emailTableCellController";
-    EmailListCell *cell = (EmailListCell *)[(UITableView *)self.view cellForRowAtIndexPath:indexPath];
-    }
+
+}
 
 
 
