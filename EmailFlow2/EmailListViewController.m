@@ -28,6 +28,7 @@
     if (self) {
         // Custom initialization
         [self.tableView addSubview:self.emailDetailView];
+        [self.tableView addSubview:self.longPressWindow];
     }
     return self;
 }
@@ -88,6 +89,23 @@
 
     // Return the number of sections.
     return 1;
+}
+#pragma mark - Longpress menu
+
+-(UIView *)longPressWindow
+{
+    if(!_longPressWindow){
+        NSInteger screenWidth = [UIScreen mainScreen].bounds.size.width;
+        _longPressWindow = [[UIView alloc] initWithFrame:CGRectMake(screenWidth, 0, screenWidth, 98)];
+        UIImageView *menu = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, 98)];
+        menu.image = [UIImage imageNamed:@"HomeCellLongPress@2x.png"];
+        [_longPressWindow addSubview:menu];
+        
+        UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped:)];
+        [_longPressWindow addGestureRecognizer:tapRecognizer];
+         
+    }
+    return _longPressWindow;
 }
 
 #pragma mark - Email Detail View
@@ -204,13 +222,6 @@
     {
         CGPoint p = [longPress locationInView:self.tableView];
         NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:p];
-
-        // if another cell is currently being longpressed clear it
-        if(_currentlySelectedListCell >-1)
-        {
-            NSIndexPath *indexPath2 = [self getCurrentlySelectedListCellPath];
-            [self updateLongpressView:indexPath2];
-        }
         [self setCurrentlySelectedListCellPath:indexPath];
         _currentlySelectedListCell = indexPath.row;
         if (indexPath == nil)
@@ -219,23 +230,16 @@
         }
         else
         {
-            static NSString *CellIdentifier = EmailListCellIdentifier;
-            EmailListCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-            [cell.longpressView setHidden:NO];
-            //UIView *longPressView = (UIView*)[self.view viewWithTag:(indexPath.row*100)+EMAIL_LONGPRESS_VIEW_TAG];
-            //[longPressView setAlpha:1.0];
-			
+            EmailListCell *updateCell = [self.tableView cellForRowAtIndexPath:indexPath];
+            [_longPressWindow setFrame:updateCell.frame];
         }
     }
 }
 
 - (void)updateLongpressView:(NSIndexPath *)tagField {
-    //static NSString *CellIdentifier = EmailListCellIdentifier;
-    //EmailListCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:tagField];
-    UIView *longPressView = (UIView*)[self.view viewWithTag:(tagField.row*100)+EMAIL_LONGPRESS_VIEW_TAG];
-    [longPressView setHidden:YES];
-    //UIAlertView* mes=[[UIAlertView alloc] initWithTitle:@"LONG HOLD REVISITED" message:[NSString stringWithFormat:@"hit the update routine %i", tagField.row] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
-    //[mes show];
+    CGRect cell = CGRectMake([UIScreen mainScreen].bounds.size.width,0, 1, 98);
+     [_longPressWindow setFrame:cell];
+    
     _currentlySelectedListCell = -1;
 }
 
@@ -342,7 +346,7 @@
     NSString *imageData = @"default";
     if([imageData isEqual:@"default"])
     {
-        [cell.emailAvatar setImage:[UIImage imageNamed:@"ProfilePlaceholderSolid@2x.png"]];
+        [cell.emailAvatar setImage:[UIImage imageNamed:@"ProfilePlaceholder@2x.png"]];
         cell.emailAvatar.layer.cornerRadius = AVATAR_CORNER_RADIUS;
         cell.emailAvatar.layer.masksToBounds = YES;
     }
@@ -401,18 +405,14 @@
     CGPoint p = [taps locationInView:self.tableView];
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:p];
     
+    
     // a new cell was tapped when a cell was already in long hold
-    //UIAlertView* mes=[[UIAlertView alloc] initWithTitle:@"CELL TAPPED" message:[NSString stringWithFormat:@"RM %@", _reviewMode] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
-    //[mes show];
     if([_reviewMode isEqual:@"detailView"])
     {
-        
         [self hideEmailDetailViewTwo];
     }
     else if(_currentlySelectedListCell > -1 && _currentlySelectedListCell != indexPath.row)
     {
-        //UIAlertView* mes=[[UIAlertView alloc] initWithTitle:@"CELL TAPPED" message:[NSString stringWithFormat:@"going to the update %i", _currentlySelectedListCell] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
-        //[mes show];
         NSIndexPath *indexPath2 = [self getCurrentlySelectedListCellPath];
         [self updateLongpressView:indexPath2];
         

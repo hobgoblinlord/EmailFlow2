@@ -23,7 +23,6 @@
         [self.contentView addSubview:self.emailReadUnreadNames];
         [self.contentView addSubview:self.emailAvatar];
         [self.contentView addSubview:self.emailAccountFlag];
-        [self.contentView addSubview:self.longpressView];
     }
     return self;
 }
