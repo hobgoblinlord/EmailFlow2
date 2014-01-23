@@ -27,6 +27,7 @@
     self = [super initWithStyle:style];
     if (self) {
         // Custom initialization
+        [self.tableView addSubview:self.emailDetailView];
     }
     return self;
 }
@@ -36,6 +37,7 @@
     [super viewDidLoad];
 	
 	[self setUpTable];
+    
 
     _blueAppColor = [UIColor colorWithRed:0/255.0f green:122/255.0f blue:255/255.0f alpha:1.0f];
     _lightGrayAppColor = [UIColor colorWithRed:204/255.0f green:204/255.0f blue:204/255.0f alpha:1.0f];
@@ -44,6 +46,8 @@
     _grayBackgroundAppColor = [UIColor colorWithRed:247/255.0f green:247/255.0f blue:247/255.0f alpha:1.0f];
 
     _currentlySelectedListCell = -1;
+    _reviewMode = @"listView";
+    
 
     // _email Content list key TITLE:String, AVATAR:String, DESCRIPTION:String, READ:Boolean, TIME:String, ACCOUNT FLAG:String, New Email:int, Total Email:int
     
@@ -84,6 +88,102 @@
 
     // Return the number of sections.
     return 1;
+}
+
+#pragma mark - Email Detail View
+
+- (UIView *)emailDetailView {
+	if (!_emailDetailView) {
+        NSInteger screenWidth = [UIScreen mainScreen].bounds.size.width, screenHeight = [UIScreen mainScreen].bounds.size.height;
+		_emailDetailView = [[UIView alloc] initWithFrame:CGRectMake(screenWidth, 0, screenWidth, screenHeight)];
+        [_emailDetailView setBackgroundColor:_mediumGrayAppColor];
+        UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped:)];
+        [_emailDetailView addGestureRecognizer:tapRecognizer];
+	}
+	
+	return _emailDetailView;
+}
+
+-(void) showEmailDetailView
+{
+    CGRect labelFrame = _emailDetailView.frame;
+    labelFrame.origin.y = self.tableView.contentOffset.y;
+    _emailDetailView.frame=labelFrame;
+    labelFrame.origin.x = 0;
+    
+    
+    [UIView animateWithDuration:0.5
+                          delay:0.0
+                        options: UIViewAnimationCurveEaseOut
+                     animations:^{
+                         _emailDetailView.frame = labelFrame;
+                                            }
+                     completion:^(BOOL finished){
+                         NSLog(@"Done!");
+                     }];
+    _reviewMode =@"detailView";
+    
+}
+
+-(void) hideEmailDetailView
+{
+    CGRect labelFrame = _emailDetailView.frame;
+    labelFrame.origin.x = [UIScreen mainScreen].bounds.size.width;
+    labelFrame.origin.y = self.tableView.contentOffset.y;
+    
+    [UIView animateWithDuration:0.5
+                          delay:0.0
+                        options: UIViewAnimationCurveEaseOut
+                     animations:^{
+                         _emailDetailView.frame = labelFrame;
+                     }
+                     completion:^(BOOL finished){
+                         NSLog(@"Done!");
+                     }];
+    _reviewMode =@"listView";
+    
+}
+
+-(void) showEmailDetailViewTwo
+{
+    NSInteger screenWidth = [UIScreen mainScreen].bounds.size.width, screenHeight = [UIScreen mainScreen].bounds.size.height;
+    CGRect labelFrame = CGRectMake(screenWidth/2, _entryPointY, 1, 1);
+    _emailDetailView.frame=labelFrame;
+    //CGRectMake(screenWidth, 0, screenWidth, screenHeight)];
+    labelFrame = CGRectMake(0, 0, screenWidth , screenHeight);
+    labelFrame.origin.y = self.tableView.contentOffset.y;
+    labelFrame.origin.x = 0;
+    
+    
+    [UIView animateWithDuration:0.15
+                          delay:0.0
+                        options: UIViewAnimationCurveEaseOut
+                     animations:^{
+                         _emailDetailView.frame = labelFrame;
+                     }
+                     completion:^(BOOL finished){
+                         NSLog(@"Done!");
+                     }];
+    _reviewMode =@"detailView";
+    
+}
+
+-(void) hideEmailDetailViewTwo
+{
+    NSInteger screenWidth = [UIScreen mainScreen].bounds.size.width, screenHeight = [UIScreen mainScreen].bounds.size.height;
+    CGRect labelFrame = CGRectMake(screenWidth/2, _entryPointY, 1, 1);
+    
+    [UIView animateWithDuration:0.15
+                          delay:0.0
+                        options: UIViewAnimationCurveEaseOut
+                     animations:^{
+                         _emailDetailView.frame = labelFrame;
+                     }
+                     completion:^(BOOL finished){
+                         NSLog(@"Done!");
+                     }];
+    _reviewMode =@"listView";
+    
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -158,7 +258,7 @@
     
     // Configure the cell...
     
-    NSInteger xpos = 49, xpos2=0, screenWidth = [UIScreen mainScreen].bounds.size.width;; //default x for title and names
+    NSInteger xpos = 49, xpos2=0, screenWidth = [UIScreen mainScreen].bounds.size.width; //default x for title and names
     
     //compile the unread/total emails and names
     NSString *readUnreadPlaceholder =[NSString stringWithFormat:@"%@/%@ %@", _emailContentList[row][EMAIL_VIEW_NEW_EMAIL],_emailContentList[row][EMAIL_VIEW_TOTAL_EMAIL], _emailContentList[row][EMAIL_VIEW_NAMES]];
@@ -302,12 +402,17 @@
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:p];
     
     // a new cell was tapped when a cell was already in long hold
-    //UIAlertView* mes=[[UIAlertView alloc] initWithTitle:@"CELL TAPPED" message:[NSString stringWithFormat:@"CSR %i", _currentlySelectedListCell] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+    //UIAlertView* mes=[[UIAlertView alloc] initWithTitle:@"CELL TAPPED" message:[NSString stringWithFormat:@"RM %@", _reviewMode] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
     //[mes show];
-    if(_currentlySelectedListCell > -1 && _currentlySelectedListCell != indexPath.row)
+    if([_reviewMode isEqual:@"detailView"])
     {
-        UIAlertView* mes=[[UIAlertView alloc] initWithTitle:@"CELL TAPPED" message:[NSString stringWithFormat:@"going to the update %i", _currentlySelectedListCell] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
-        [mes show];
+        
+        [self hideEmailDetailViewTwo];
+    }
+    else if(_currentlySelectedListCell > -1 && _currentlySelectedListCell != indexPath.row)
+    {
+        //UIAlertView* mes=[[UIAlertView alloc] initWithTitle:@"CELL TAPPED" message:[NSString stringWithFormat:@"going to the update %i", _currentlySelectedListCell] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+        //[mes show];
         NSIndexPath *indexPath2 = [self getCurrentlySelectedListCellPath];
         [self updateLongpressView:indexPath2];
         
@@ -327,11 +432,13 @@
     //a cell was tapped when no cell was in longpress mode
     else
     {
-       
-       
+        _entryPointX= p.x;
+        _entryPointY = p.y;
+        [self showEmailDetailViewTwo];
     }
 
 }
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 

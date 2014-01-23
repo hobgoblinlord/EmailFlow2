@@ -43,6 +43,10 @@
 
 @property (nonatomic,strong) UIColor *blueAppColor, *lightGrayAppColor, *mediumGrayAppColor, *grayBackgroundAppColor, *darkGrayColor;
 @property (nonatomic,strong) NSIndexPath *currentlySelectedListCellPath;
-@property (nonatomic, assign) NSInteger currentlySelectedListCell;
+@property (nonatomic, assign) NSInteger currentlySelectedListCell, entryPointX, entryPointY;
+
+@property (nonatomic, strong) UIView *emailDetailView;
+@property (nonatomic, strong) NSString *reviewMode;
+
 
 @end
