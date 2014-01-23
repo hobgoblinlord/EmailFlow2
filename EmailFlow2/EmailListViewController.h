@@ -1,5 +1,5 @@
 //
-//  EmailListController.h
+//  EmailListViewController.h
 //  EmailFlow2
 //
 //  Created by Noel Proulx on 1/19/14.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface EmailListController : UITableViewController
+@interface EmailListViewController : UITableViewController
 
 // define values for the email array object--------------------------------------------
 #define EMAIL_VIEW_TITLE 0
@@ -41,7 +41,12 @@
 //--
 @property (nonatomic,strong) NSArray *emailContentList;
 
-@property (nonatomic,strong) UIColor *blueAppColor, *lightGrayAppColor, *mediumGrayAppColor, *grayBackgroundAppColor;
+@property (nonatomic,strong) UIColor *blueAppColor, *lightGrayAppColor, *mediumGrayAppColor, *grayBackgroundAppColor, *darkGrayColor;
 @property (nonatomic,strong) NSIndexPath *currentlySelectedListCellPath;
-@property (nonatomic, assign) int currentlySelectedListCell;
+@property (nonatomic, assign) NSInteger currentlySelectedListCell, entryPointX, entryPointY;
+
+@property (nonatomic, strong) UIView *emailDetailView, *longPressWindow;
+@property (nonatomic, strong) NSString *reviewMode;
+
+
 @end

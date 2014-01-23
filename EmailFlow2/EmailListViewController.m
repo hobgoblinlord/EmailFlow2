@@ -1,29 +1,34 @@
 //
-//  EmailListController.m
+//  EmailListViewController.m
 //  EmailFlow2
 //
 //  Created by Noel Proulx on 1/19/14.
 //  Copyright (c) 2014 Noel Proulx. All rights reserved.
 //
 
-#import "EmailListController.h"
+#import "EmailListViewController.h"
 #import "EmailListCell.h"
 #import "GravatarHelper.h"
 
 // gravatar
 //#import "GravatarServiceFactory.h"
 
-@interface EmailListController ()
+// email list cell
+#define EmailListCellIdentifier @"EmailListCell"
+
+@interface EmailListViewController ()
 
 @end
 
-@implementation EmailListController
+@implementation EmailListViewController
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
     if (self) {
         // Custom initialization
+        [self.tableView addSubview:self.emailDetailView];
+        [self.tableView addSubview:self.longPressWindow];
     }
     return self;
 }
@@ -31,13 +36,19 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	
+	[self setUpTable];
+    
 
     _blueAppColor = [UIColor colorWithRed:0/255.0f green:122/255.0f blue:255/255.0f alpha:1.0f];
     _lightGrayAppColor = [UIColor colorWithRed:204/255.0f green:204/255.0f blue:204/255.0f alpha:1.0f];
     _mediumGrayAppColor = [UIColor colorWithRed:122/255.0f green:122/255.0f blue:122/255.0f alpha:1.0f];
+    _darkGrayColor = [UIColor colorWithRed:50/255.0f green:50/255.0f blue:50/255.0f alpha:1.0f];
     _grayBackgroundAppColor = [UIColor colorWithRed:247/255.0f green:247/255.0f blue:247/255.0f alpha:1.0f];
 
     _currentlySelectedListCell = -1;
+    _reviewMode = @"listView";
+    
 
     // _email Content list key TITLE:String, AVATAR:String, DESCRIPTION:String, READ:Boolean, TIME:String, ACCOUNT FLAG:String, New Email:int, Total Email:int
     
@@ -46,7 +57,23 @@
                          @[@"Are you going to the meeting?",@"nfennel@incubate.co",@"Are you going to be here in time for the meeting? what time do you think you will get here if you are?",@false,@"5:14a",@"Nathan",@"blueTri.png",@"3",@"20"],
                          @[@"What Time is the Party?",@"nproulx@incubate.co",@"What time should I arrive?",@false,@"3:14a",@"Noel Proulx",@"blueTri.png",@"1",@"5"],
                          @[@"Hey Check this out",@"tchmieleski@incubate.co",@"I thought that this article was really useful. take a look and let me know what you think and if we should use this method",@true,@"Tue",@"Troy Chmieleski",@"blueTri.png",@"0",@"1"]];
+	
+	NSMutableArray *performanceTest = [NSMutableArray arrayWithArray:_emailContentList];
+	
+	NSUInteger numberOfAdditionalCells = 2000;
+	
+	for (NSUInteger i = 0; i < numberOfAdditionalCells; i++) {
+		[performanceTest addObject:@[@"How's it going",@"bgoss@incubate.co",@"Just wanted to see what you are up to and how things have been. is everything ok in your corner of the world. hit me up with what's going on this weekend",@false,@"8:10p",@"Brian Goss",@"redTri.png",@"4",@"7",]];
+        [performanceTest addObject:@[@"Who went to the party last night",@"jgoss@incubate.co",@"If you went to the party did you see my keys?",@true,@"7:12p",@"Jeff Goss",@"redTri.png",@"0",@"4",]];
+	}
+	
+	_emailContentList = performanceTest;
+}
 
+#pragma mark - Set up table
+
+- (void)setUpTable {
+	[self.tableView registerClass:[EmailListCell class] forCellReuseIdentifier:EmailListCellIdentifier];
 }
 
 - (void)didReceiveMemoryWarning
@@ -62,6 +89,119 @@
 
     // Return the number of sections.
     return 1;
+}
+#pragma mark - Longpress menu
+
+-(UIView *)longPressWindow
+{
+    if(!_longPressWindow){
+        NSInteger screenWidth = [UIScreen mainScreen].bounds.size.width;
+        _longPressWindow = [[UIView alloc] initWithFrame:CGRectMake(screenWidth, 0, screenWidth, 98)];
+        UIImageView *menu = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, 98)];
+        menu.image = [UIImage imageNamed:@"HomeCellLongPress@2x.png"];
+        [_longPressWindow addSubview:menu];
+        
+        UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped:)];
+        [_longPressWindow addGestureRecognizer:tapRecognizer];
+         
+    }
+    return _longPressWindow;
+}
+
+#pragma mark - Email Detail View
+
+- (UIView *)emailDetailView {
+	if (!_emailDetailView) {
+        NSInteger screenWidth = [UIScreen mainScreen].bounds.size.width, screenHeight = [UIScreen mainScreen].bounds.size.height;
+		_emailDetailView = [[UIView alloc] initWithFrame:CGRectMake(screenWidth, 0, screenWidth, screenHeight)];
+        [_emailDetailView setBackgroundColor:_mediumGrayAppColor];
+        UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped:)];
+        [_emailDetailView addGestureRecognizer:tapRecognizer];
+	}
+	
+	return _emailDetailView;
+}
+
+-(void) showEmailDetailView
+{
+    CGRect labelFrame = _emailDetailView.frame;
+    labelFrame.origin.y = self.tableView.contentOffset.y;
+    _emailDetailView.frame=labelFrame;
+    labelFrame.origin.x = 0;
+    
+    
+    [UIView animateWithDuration:0.5
+                          delay:0.0
+                        options: UIViewAnimationCurveEaseOut
+                     animations:^{
+                         _emailDetailView.frame = labelFrame;
+                                            }
+                     completion:^(BOOL finished){
+                         NSLog(@"Done!");
+                     }];
+    _reviewMode =@"detailView";
+    
+}
+
+-(void) hideEmailDetailView
+{
+    CGRect labelFrame = _emailDetailView.frame;
+    labelFrame.origin.x = [UIScreen mainScreen].bounds.size.width;
+    labelFrame.origin.y = self.tableView.contentOffset.y;
+    
+    [UIView animateWithDuration:0.5
+                          delay:0.0
+                        options: UIViewAnimationCurveEaseOut
+                     animations:^{
+                         _emailDetailView.frame = labelFrame;
+                     }
+                     completion:^(BOOL finished){
+                         NSLog(@"Done!");
+                     }];
+    _reviewMode =@"listView";
+    
+}
+
+-(void) showEmailDetailViewTwo
+{
+    NSInteger screenWidth = [UIScreen mainScreen].bounds.size.width, screenHeight = [UIScreen mainScreen].bounds.size.height;
+    CGRect labelFrame = CGRectMake(screenWidth/2, _entryPointY, 1, 1);
+    _emailDetailView.frame=labelFrame;
+    //CGRectMake(screenWidth, 0, screenWidth, screenHeight)];
+    labelFrame = CGRectMake(0, 0, screenWidth , screenHeight);
+    labelFrame.origin.y = self.tableView.contentOffset.y;
+    labelFrame.origin.x = 0;
+    
+    
+    [UIView animateWithDuration:0.15
+                          delay:0.0
+                        options: UIViewAnimationCurveEaseOut
+                     animations:^{
+                         _emailDetailView.frame = labelFrame;
+                     }
+                     completion:^(BOOL finished){
+                         NSLog(@"Done!");
+                     }];
+    _reviewMode =@"detailView";
+    
+}
+
+-(void) hideEmailDetailViewTwo
+{
+    NSInteger screenWidth = [UIScreen mainScreen].bounds.size.width, screenHeight = [UIScreen mainScreen].bounds.size.height;
+    CGRect labelFrame = CGRectMake(screenWidth/2, _entryPointY, 1, 1);
+    
+    [UIView animateWithDuration:0.15
+                          delay:0.0
+                        options: UIViewAnimationCurveEaseOut
+                     animations:^{
+                         _emailDetailView.frame = labelFrame;
+                     }
+                     completion:^(BOOL finished){
+                         NSLog(@"Done!");
+                     }];
+    _reviewMode =@"listView";
+    
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -81,38 +221,26 @@
     if (longPress.state==UIGestureRecognizerStateBegan)
     {
         CGPoint p = [longPress locationInView:self.tableView];
-        
         NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:p];
-        // if another cell is currently being longpressed clear it
-        int theCurrentCell = [self getCurrentlySelectedListCell];
-        if(theCurrentCell >-1)
-        {
-            NSIndexPath *indexPath2 = [self getCurrentlySelectedListCellPath];
-            [self updateLongpressView:indexPath2];
-        }
         [self setCurrentlySelectedListCellPath:indexPath];
-        [self setCurrentlySelectedListCell:indexPath.row];
+        _currentlySelectedListCell = indexPath.row;
         if (indexPath == nil)
         {
             NSLog(@"No Cell");
         }
         else
         {
-            static NSString *CellIdentifier = @"EmailListCell";
-            EmailListCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-            UIView *longPressView = (UIView*)[self.view viewWithTag:(indexPath.row*100)+EMAIL_LONGPRESS_VIEW_TAG];
-            [longPressView setAlpha:1.0];
-            
-            
-
+            EmailListCell *updateCell = [self.tableView cellForRowAtIndexPath:indexPath];
+            [_longPressWindow setFrame:updateCell.frame];
         }
     }
 }
 
 - (void)updateLongpressView:(NSIndexPath *)tagField {
-    UIView *longPressView = (UIView*)[self.view viewWithTag:(tagField.row*100)+EMAIL_LONGPRESS_VIEW_TAG];
-        [longPressView setAlpha:0.0];
-    [self setCurrentlySelectedListCell:-1];
+    CGRect cell = CGRectMake([UIScreen mainScreen].bounds.size.width,0, 1, 98);
+     [_longPressWindow setFrame:cell];
+    
+    _currentlySelectedListCell = -1;
 }
 
 - (NSIndexPath*) getCurrentlySelectedListCellPath
@@ -125,39 +253,16 @@
     _currentlySelectedListCellPath = cellValue;
 }
 
-- (NSInteger) getCurrentlySelectedListCell
-{
-    
-    // Return the number of rows in the section.
-    return _currentlySelectedListCell;
-}
-
-- (void) setCurrentlySelectedListCell:(int)cellValue
-{
-    _currentlySelectedListCell = cellValue;
-}
-
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"EmailListCell";
-    EmailListCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    int row = [indexPath row];
-    UILabel *emailSubjectLine, *emailTimeLine, *emailPreview, *emailReadUnread;
-    UIImageView  *emailAccountFlag, *dotImgView;
-    
+    EmailListCell *cell = [tableView dequeueReusableCellWithIdentifier:EmailListCellIdentifier forIndexPath:indexPath];
+    NSInteger row = [indexPath row];
+	
+    UILabel *emailSubjectLine;
     
     // Configure the cell...
     
-    
-    int xpos = 49; //default x for title and names
-    int xpos2 = 0; // for the blue dot
-    int screenWidth = [UIScreen mainScreen].bounds.size.width; // screen width
-    
-    NSString *defaultURL = @"default";
-    NSURL *gravatarDefaultURL = [GravatarHelper getGravatarURL:defaultURL];
-    
-    NSData *imageDefaultData = [NSData dataWithContentsOfURL:gravatarDefaultURL];
+    NSInteger xpos = 49, xpos2=0, screenWidth = [UIScreen mainScreen].bounds.size.width; //default x for title and names
     
     //compile the unread/total emails and names
     NSString *readUnreadPlaceholder =[NSString stringWithFormat:@"%@/%@ %@", _emailContentList[row][EMAIL_VIEW_NEW_EMAIL],_emailContentList[row][EMAIL_VIEW_TOTAL_EMAIL], _emailContentList[row][EMAIL_VIEW_NAMES]];
@@ -173,12 +278,12 @@
     {
         //no unread emails default to grey for the entire string
         [emailReadString addAttribute:NSForegroundColorAttributeName value:_mediumGrayAppColor range:NSMakeRange(0, readUnreadPlaceholder.length)];
+        [cell.emailBlueDot setImage:nil];
     }
     else{
         //add the dot
-        dotImgView = [[UIImageView alloc] initWithFrame:CGRectMake(xpos, 18, 10, 10)];
-        dotImgView.image = [UIImage imageNamed:@"NewMail@2x.png"];
-        [cell.contentView addSubview: dotImgView];
+        [cell.emailBlueDot setImage:[UIImage imageNamed:@"NewMail@2x.png"]];
+    
         xpos2 = 12;
         // to change the color of unread emails to blue
         NSString *getLength = _emailContentList[row][EMAIL_VIEW_NEW_EMAIL];
@@ -188,6 +293,7 @@
     }
     
     // email subject ----------------------------------------------------------------------
+<<<<<<< HEAD:EmailFlow2/EmailListController.m
     //emailSubjectLine = [[UILabel alloc] initWithFrame:CGRectMake(xpos, 27, 243, 21)];
     //emailSubjectLine.tag = EMAIL_SUBJECT_TAG;
     //emailSubjectLine.font = [UIFont boldSystemFontOfSize:15.0f];
@@ -198,75 +304,64 @@
     
     // email
 	[cell.emailSubject setText:_emailContentList[row][EMAIL_VIEW_TITLE]];
+=======
+    [cell.emailSubjectLine setText:_emailContentList[row][EMAIL_VIEW_TITLE]];
+>>>>>>> develop:EmailFlow2/EmailListViewController.m
     //end email subject ----------------------------------------------------------------------
     
     
     //email time and if flagged as email read ------------------------------------------------
-    emailTimeLine = [[UILabel alloc] initWithFrame:CGRectMake(screenWidth-66, 12, 60, 21)];
-    emailTimeLine.tag = EMAIL_TIME_TAG;
-    emailTimeLine.font = [UIFont systemFontOfSize:14.0f];
-    emailTimeLine.numberOfLines = 1;
-    emailTimeLine.text = _emailContentList[row][EMAIL_VIEW_TIME];
-    emailTimeLine.textAlignment = NSTextAlignmentRight;
     // change background color and time color if the email has been read
     if ([_emailContentList[row][EMAIL_VIEW_READ] isEqual: @true])
     {
-        
         cell.contentView.backgroundColor = _grayBackgroundAppColor;
-        emailTimeLine.textColor = _lightGrayAppColor;
-        
+        [cell.emailTimeLabel setTextColor:_lightGrayAppColor];
     }
     else
     {
-        emailTimeLine.textColor = [UIColor blackColor];
+        cell.contentView.backgroundColor = [UIColor whiteColor];
+        [cell.emailTimeLabel setTextColor:[UIColor blackColor]];
     }
-    
-    [cell.contentView addSubview:emailTimeLine];
+    [cell.emailTimeLabel setText:_emailContentList[row][EMAIL_VIEW_TIME]];
     //end email time -------------------------------------------------------------------------
     
     
     //email preview --------------------------------------------------------------------------
-    emailPreview = [[UILabel alloc] initWithFrame:CGRectMake(9, 49, screenWidth-15, 35)];
-    emailPreview.tag = EMAIL_PREVIEW_TAG;
-    emailPreview.textColor = _mediumGrayAppColor;
-    emailPreview.font = [UIFont systemFontOfSize:14.0f];
-    emailPreview.numberOfLines = 2;
-    emailPreview.text=_emailContentList[row][EMAIL_VIEW_PREVIEW];
-    CGSize labelSize = [emailPreview.text sizeWithFont:emailPreview.font
-                                constrainedToSize:emailPreview.frame.size
+    [cell.emailPreviewLabel setTextColor:_mediumGrayAppColor];
+    [cell.emailPreviewLabel setText:_emailContentList[row][EMAIL_VIEW_PREVIEW]];
+    CGSize labelSize = [cell.emailPreviewLabel.text sizeWithFont:cell.emailPreviewLabel.font
+                                constrainedToSize:cell.emailPreviewLabel.frame.size
                                     lineBreakMode:UILineBreakModeWordWrap];
     CGFloat labelHeight = labelSize.height;
     if(labelHeight<18) //adjust y location if only one line of text in the preview
     {
-        CGRect labelFrame = [emailPreview frame];
+        CGRect labelFrame = [cell.emailPreviewLabel frame];
         labelFrame.origin.y = 40;
-        [emailPreview setFrame:labelFrame];
+        [cell.emailPreviewLabel setFrame:labelFrame];
     }
-    [cell.contentView addSubview:emailPreview];
+    else{
+        CGRect labelFrame = [cell.emailPreviewLabel frame];
+        labelFrame.origin.y = 49;
+        [cell.emailPreviewLabel setFrame:labelFrame];
+    }
     // end email preview ---------------------------------------------------------------------
     
     
     //email read and unread ------------------------------------------------------------------
-    emailReadUnread = [[UILabel alloc] initWithFrame:CGRectMake(xpos+xpos2, 12, 164, 21)];
-    emailReadUnread.tag = EMAIL_UNREAD_TAG;
-    emailReadUnread.attributedText = emailReadString;
-    emailReadUnread.font = [UIFont systemFontOfSize:14.0f];
-    [cell.contentView addSubview:emailReadUnread];
+    CGRect readFrame = [cell.emailReadUnreadNames frame];
+    readFrame.origin.x = xpos+xpos2;
+    [cell.emailReadUnreadNames setFrame:readFrame];
+    [cell.emailReadUnreadNames setAttributedText:emailReadString];
     //end email read and unread --------------------------------------------------------------
     
     
     //email avatar ---------------------------------------------------------------------------
-    UIImageView *emailAvatar = [[UIImageView alloc] initWithFrame:CGRectMake(9, 9, 36, 36)];
-    NSString *newURL = _emailContentList[row][EMAIL_VIEW_AVATAR];
-    NSURL *gravatarURL = [GravatarHelper getGravatarURL:newURL];
-    NSData *imageData = [NSData dataWithContentsOfURL:gravatarURL];
-    
-    if(imageData !=nil)
+    NSString *imageData = @"default";
+    if([imageData isEqual:@"default"])
     {
-        emailAvatar.image = [UIImage imageWithData:imageData];
-        emailAvatar.layer.cornerRadius = AVATAR_CORNER_RADIUS;
-        emailAvatar.layer.masksToBounds = YES;
-    [cell.contentView addSubview: emailAvatar];
+        [cell.emailAvatar setImage:[UIImage imageNamed:@"ProfilePlaceholder@2x.png"]];
+        cell.emailAvatar.layer.cornerRadius = AVATAR_CORNER_RADIUS;
+        cell.emailAvatar.layer.masksToBounds = YES;
     }
     else
     {
@@ -274,71 +369,34 @@
         CGRect avatarFrame = [emailSubjectLine frame];
         avatarFrame.origin.x=9;
         [emailSubjectLine setFrame:avatarFrame];
-        avatarFrame = [emailReadUnread frame];
+        avatarFrame = [cell.emailReadUnreadNames frame];
         avatarFrame.origin.x=9+xpos2;
-        [emailReadUnread setFrame: avatarFrame];
+        [cell.emailReadUnreadNames setFrame: avatarFrame];
         if(xpos2>0)
         {
-            avatarFrame = [dotImgView frame];
+            avatarFrame = cell.emailBlueDot.frame;
             avatarFrame.origin.x = 9;
-            [dotImgView setFrame:avatarFrame];
+            [cell.emailBlueDot setFrame:avatarFrame];
         }
     }
     //end email avatar -----------------------------------------------------------------------
     
     
     //email account flag ---------------------------------------------------------------------
-    emailAccountFlag = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 8, 20)];
-    emailAccountFlag.image = [UIImage imageNamed:_emailContentList[row][EMAIL_VIEW_ACCOUNT_FLAG]];
-    [cell.contentView addSubview:emailAccountFlag];
+    [cell.emailAccountFlag setImage:[UIImage imageNamed:_emailContentList[row][EMAIL_VIEW_ACCOUNT_FLAG]]];
     //end email account flag -----------------------------------------------------------------
     
     
     //email longpress overlay ----------------------------------------------------------------
-    CGRect  viewRect = CGRectMake(0, 0, screenWidth, 98);
-    UIView* longpressView = [[UIView alloc] initWithFrame:viewRect];
-    longpressView.backgroundColor = _mediumGrayAppColor;
-    longpressView.tag = 100*row+EMAIL_LONGPRESS_VIEW_TAG;
-    longpressView.alpha = 0.0f;
-    
-    int boxes = screenWidth/4;
-    int padding = (boxes-36)/2;
-    
-    UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(padding, 20, 36, 36)];
-    imgView.image = [UIImage imageNamed:@"Trash@2x.png"];
-    [longpressView addSubview: imgView];
-    imgView = [[UIImageView alloc] initWithFrame:CGRectMake(padding+boxes, 20, 36, 36)];
-    imgView.image = [UIImage imageNamed:@"Spam@2x.png"];
-    [longpressView addSubview: imgView];
-    imgView = [[UIImageView alloc] initWithFrame:CGRectMake(padding+(boxes*2), 20, 36, 36)];
-    imgView.image = [UIImage imageNamed:@"LabelHome@2x.png"];
-    [longpressView addSubview: imgView];
-    imgView = [[UIImageView alloc] initWithFrame:CGRectMake(padding+(boxes*3), 20, 36, 36)];
-    imgView.image = [UIImage imageNamed:@"LinkHome@2x.png"];
-    [longpressView addSubview: imgView];
-    //draw the text labels for the icons
-    UILabel  * label = [[UILabel alloc] initWithFrame:CGRectMake(0, 60, boxes, 16)];
-    label.text = @"Delete";
-    label.textAlignment = NSTextAlignmentCenter;
-    label.textColor = [UIColor colorWithRed:255/255.0f green:255/255.0f blue:255/255.0f alpha:1.0f];
-    [longpressView addSubview: label];
-    label = [[UILabel alloc] initWithFrame:CGRectMake(boxes, 60, boxes, 16)];
-    label.text = @"Spam";
-    label.textAlignment = NSTextAlignmentCenter;
-    label.textColor = [UIColor colorWithRed:255/255.0f green:255/255.0f blue:255/255.0f alpha:1.0f];
-    [longpressView addSubview: label];
-    label = [[UILabel alloc] initWithFrame:CGRectMake(boxes*2, 60, boxes, 16)];
-    label.text = @"Label";
-    label.textAlignment = NSTextAlignmentCenter;
-    label.textColor = [UIColor colorWithRed:255/255.0f green:255/255.0f blue:255/255.0f alpha:1.0f];
-    [longpressView addSubview: label];
-    label = [[UILabel alloc] initWithFrame:CGRectMake(boxes*3, 60, boxes, 16)];
-    label.text = @"Link";
-    label.textAlignment = NSTextAlignmentCenter;
-    label.textColor = [UIColor colorWithRed:255/255.0f green:255/255.0f blue:255/255.0f alpha:1.0f];
-    [longpressView addSubview: label];
-    
-    [cell.contentView addSubview:longpressView];
+    [cell.longpressView setTag:100*row+EMAIL_LONGPRESS_VIEW_TAG];
+    [cell.longpressView setBackgroundColor:_mediumGrayAppColor];
+    if(row != _currentlySelectedListCell)
+    {
+        [cell.longpressView setHidden:YES];
+    }
+    else{
+        [cell.longpressView setHidden:NO];
+    }
     //end longpress overlay ------------------------------------------------------------------
     
     //long press --------------------------------------------------------------------------
@@ -357,20 +415,23 @@
 
 - (void) tapped: (UIGestureRecognizer *)taps
 {
-    
-    int theCurrentCell = [self getCurrentlySelectedListCell];
     CGPoint p = [taps locationInView:self.tableView];
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:p];
     
+    
     // a new cell was tapped when a cell was already in long hold
-    if(theCurrentCell > -1 && theCurrentCell != indexPath.row)
+    if([_reviewMode isEqual:@"detailView"])
+    {
+        [self hideEmailDetailViewTwo];
+    }
+    else if(_currentlySelectedListCell > -1 && _currentlySelectedListCell != indexPath.row)
     {
         NSIndexPath *indexPath2 = [self getCurrentlySelectedListCellPath];
         [self updateLongpressView:indexPath2];
         
     }
     //is tapping inside a cell in longpress handle menu
-    else if(theCurrentCell == indexPath.row)
+    else if(_currentlySelectedListCell == indexPath.row)
     {
         
         int pointPressed = p.x, boxes=[UIScreen mainScreen].bounds.size.width/4,section=0;
@@ -384,17 +445,17 @@
     //a cell was tapped when no cell was in longpress mode
     else
     {
-       
-       
+        _entryPointX= p.x;
+        _entryPointY = p.y;
+        [self showEmailDetailViewTwo];
     }
 
 }
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //static NSString *CellIdentifier = @"emailTableCellController";
-    EmailListCell *cell = (EmailListCell *)[(UITableView *)self.view cellForRowAtIndexPath:indexPath];
-    int theCurrentCell = [self getCurrentlySelectedListCell];
-    }
+
+}
 
 
 
