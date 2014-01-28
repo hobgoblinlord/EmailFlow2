@@ -45,8 +45,9 @@
 @property (nonatomic,strong) NSIndexPath *currentlySelectedListCellPath;
 @property (nonatomic, assign) NSInteger currentlySelectedListCell, entryPointX, entryPointY;
 
-@property (nonatomic, strong) UIView *emailDetailView, *longPressWindow;
+@property (nonatomic, strong) UIView *emailDetailView, *longPressWindow, *emailDetailHeader;
 @property (nonatomic, strong) NSString *reviewMode;
+@property (nonatomic,strong) UIImageView *redMail, *redCalendar;
 
 
 @end

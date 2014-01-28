@@ -117,9 +117,42 @@
         [_emailDetailView setBackgroundColor:_mediumGrayAppColor];
         UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped:)];
         [_emailDetailView addGestureRecognizer:tapRecognizer];
+        [_emailDetailView addSubview:self.emailDetailHeader];
 	}
 	
 	return _emailDetailView;
+}
+
+- (UIView*)emailDetailHeader{
+    if(!_emailDetailHeader){
+        NSInteger screenWidth = [UIScreen mainScreen].bounds.size.width;
+        _emailDetailHeader = [[UIView alloc]initWithFrame:CGRectMake(0, 20.0f, screenWidth, 56)];
+        [_emailDetailHeader setBackgroundColor:[UIColor whiteColor]];
+        [_emailDetailHeader addSubview:self.redMail];
+        [_emailDetailHeader addSubview:self.redCalendar];
+        
+    }
+    return _emailDetailHeader;
+}
+
+- (UIImageView *)redMail{
+    if(!_redMail){
+        _redMail = [[UIImageView alloc]initWithFrame:CGRectMake(38.0f,14.0f,32.0f,32.0f)];
+        [_redMail setImage:[UIImage imageNamed:@"MailRed@2x.png"]];
+        
+    }
+    
+    return _redMail;
+}
+
+- (UIImageView *)redCalendar{
+    if(!_redCalendar){
+        _redCalendar = [[UIImageView alloc]initWithFrame:CGRectMake(108.0f,14.0f,32.0f,32.0f)];
+        [_redCalendar setImage:[UIImage imageNamed:@"CalendarRed@2x.png"]];
+        
+    }
+    
+    return _redCalendar;
 }
 
 -(void) showEmailDetailView
@@ -164,6 +197,7 @@
 
 -(void) showEmailDetailViewTwo
 {
+    _emailDetailHeader.hidden = NO;
     NSInteger screenWidth = [UIScreen mainScreen].bounds.size.width, screenHeight = [UIScreen mainScreen].bounds.size.height;
     CGRect labelFrame = CGRectMake(screenWidth/2, _entryPointY, 1, 1);
     _emailDetailView.frame=labelFrame;
@@ -171,7 +205,7 @@
     labelFrame = CGRectMake(0, 0, screenWidth , screenHeight);
     labelFrame.origin.y = self.tableView.contentOffset.y;
     labelFrame.origin.x = 0;
-    
+    self.tableView.scrollEnabled = NO;
     
     [UIView animateWithDuration:0.15
                           delay:0.0
@@ -190,7 +224,7 @@
 {
     NSInteger screenWidth = [UIScreen mainScreen].bounds.size.width, screenHeight = [UIScreen mainScreen].bounds.size.height;
     CGRect labelFrame = CGRectMake(screenWidth/2, _entryPointY, 1, 1);
-    
+    _emailDetailHeader.hidden = YES;
     [UIView animateWithDuration:0.15
                           delay:0.0
                         options: UIViewAnimationCurveEaseOut
@@ -198,9 +232,14 @@
                          _emailDetailView.frame = labelFrame;
                      }
                      completion:^(BOOL finished){
-                         NSLog(@"Done!");
+                         
+                         CGRect labelFrame = CGRectMake(screenWidth, 0, screenWidth , screenHeight);
+                         labelFrame.origin.y = self.tableView.contentOffset.y;
+                         labelFrame.origin.x = screenWidth;
+                         _emailDetailView.frame=labelFrame;
                      }];
     _reviewMode =@"listView";
+   self.tableView.scrollEnabled = YES;
     
 }
 
