@@ -9,6 +9,8 @@
 #import "EmailListViewController.h"
 #import "EmailListCell.h"
 #import "GravatarHelper.h"
+#import "EmailConversationViewController.h"
+#import "EmailDetailCell.h"
 
 // gravatar
 //#import "GravatarServiceFactory.h"
@@ -38,6 +40,7 @@
     [super viewDidLoad];
 	
 	[self setUpTable];
+    [self setUpDetailTable];
     
 
     _blueAppColor = [UIColor colorWithRed:0/255.0f green:122/255.0f blue:255/255.0f alpha:1.0f];
@@ -118,6 +121,7 @@
         UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped:)];
         [_emailDetailView addGestureRecognizer:tapRecognizer];
         [_emailDetailView addSubview:self.emailDetailHeader];
+        //[_emailDetailView addSubview:self.emailDetailConversation];
 	}
 	
 	return _emailDetailView;
@@ -290,6 +294,25 @@
 - (void) setCurrentlySelectedListCellPath:(NSIndexPath *)cellValue
 {
     _currentlySelectedListCellPath = cellValue;
+}
+
+- (UITableView *)emailDetailConversation {
+	if (!_emailDetailConversation) {
+		
+		
+		_emailDetailConversation = [[UITableView alloc] initWithFrame:CGRectMake(0, 65, 320, 200)];
+		
+		[_emailDetailConversation setDataSource:self];
+		[_emailDetailConversation setDelegate:self];
+	}
+	
+	return _emailDetailConversation;
+}
+
+- (void)setUpDetailTable {
+	[self.emailDetailConversation setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+	[self.emailDetailConversation registerClass:[EmailDetailCell class]
+				forCellReuseIdentifier:@"EmailDetailCellPod"];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

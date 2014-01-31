@@ -31,6 +31,8 @@
 		41AE8381188DADF800E8713F /* LabelHome@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 41AE8380188DADF800E8713F /* LabelHome@2x.png */; };
 		41AE8383188DAE0100E8713F /* Trash@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 41AE8382188DAE0100E8713F /* Trash@2x.png */; };
 		41AE8385188DAE0700E8713F /* Spam@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 41AE8384188DAE0700E8713F /* Spam@2x.png */; };
+		41B1F303189A12E0004A364C /* EmailConversationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 41B1F302189A12E0004A364C /* EmailConversationViewController.m */; };
+		41B1F306189A14E0004A364C /* EmailDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 41B1F305189A14E0004A364C /* EmailDetailCell.m */; };
 		41C765701890A9CE00DE2C89 /* ProfilePlaceholderSolid@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 41C7656F1890A9CE00DE2C89 /* ProfilePlaceholderSolid@2x.png */; };
 		41C765721891ACB700DE2C89 /* HomeCellLongPress@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 41C765711891ACB700DE2C89 /* HomeCellLongPress@2x.png */; };
 		41C765741891ACBC00DE2C89 /* ProfilePlaceholder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 41C765731891ACBC00DE2C89 /* ProfilePlaceholder@2x.png */; };
@@ -82,6 +84,10 @@
 		41AE8380188DADF800E8713F /* LabelHome@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LabelHome@2x.png"; sourceTree = "<group>"; };
 		41AE8382188DAE0100E8713F /* Trash@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Trash@2x.png"; sourceTree = "<group>"; };
 		41AE8384188DAE0700E8713F /* Spam@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Spam@2x.png"; sourceTree = "<group>"; };
+		41B1F301189A12E0004A364C /* EmailConversationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EmailConversationViewController.h; path = ../EmailConversationViewController.h; sourceTree = "<group>"; };
+		41B1F302189A12E0004A364C /* EmailConversationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EmailConversationViewController.m; path = ../EmailConversationViewController.m; sourceTree = "<group>"; };
+		41B1F304189A14E0004A364C /* EmailDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmailDetailCell.h; sourceTree = "<group>"; };
+		41B1F305189A14E0004A364C /* EmailDetailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmailDetailCell.m; sourceTree = "<group>"; };
 		41C7656F1890A9CE00DE2C89 /* ProfilePlaceholderSolid@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ProfilePlaceholderSolid@2x.png"; sourceTree = "<group>"; };
 		41C765711891ACB700DE2C89 /* HomeCellLongPress@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HomeCellLongPress@2x.png"; sourceTree = "<group>"; };
 		41C765731891ACBC00DE2C89 /* ProfilePlaceholder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ProfilePlaceholder@2x.png"; sourceTree = "<group>"; };
@@ -157,6 +163,10 @@
 				41AE8340188BB26400E8713F /* EmailListViewController.m */,
 				41AE8342188BB30D00E8713F /* EmailListCell.h */,
 				41AE8343188BB30D00E8713F /* EmailListCell.m */,
+				41B1F301189A12E0004A364C /* EmailConversationViewController.h */,
+				41B1F302189A12E0004A364C /* EmailConversationViewController.m */,
+				41B1F304189A14E0004A364C /* EmailDetailCell.h */,
+				41B1F305189A14E0004A364C /* EmailDetailCell.m */,
 				41AE8311188BB1EB00E8713F /* Supporting Files */,
 			);
 			path = EmailFlow2;
@@ -319,11 +329,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				41B1F303189A12E0004A364C /* EmailConversationViewController.m in Sources */,
 				41AE831B188BB1EB00E8713F /* AppDelegate.m in Sources */,
 				41AE8317188BB1EB00E8713F /* main.m in Sources */,
 				41AE8344188BB30D00E8713F /* EmailListCell.m in Sources */,
 				41AE8362188C8FE700E8713F /* GravatarHelper.m in Sources */,
 				41AE8341188BB26400E8713F /* EmailListViewController.m in Sources */,
+				41B1F306189A14E0004A364C /* EmailDetailCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -48,6 +48,7 @@
 @property (nonatomic, strong) UIView *emailDetailView, *longPressWindow, *emailDetailHeader;
 @property (nonatomic, strong) NSString *reviewMode;
 @property (nonatomic,strong) UIImageView *redMail, *redCalendar;
+@property (nonatomic, strong) UITableView *emailDetailConversation;
 
 
 @end
